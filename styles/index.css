@@ -92,10 +92,9 @@ button:hover {
 }
 
 footer{
-    position: absolute;
+    position:fixed;
     bottom: 2%;
     width:60%;
-    margin:auto;
     background-color: #1B5176;
 }
 

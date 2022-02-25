@@ -11,33 +11,93 @@ body{
     font-family: Hack, sans-serif;
     height: max-content;
     max-height: 100%;
-    max-width: 60%;
+    max-width: 80%;
     margin: 0 auto;
 }
 
+#title{
+    margin-top: 5em;
+    text-align: center;
+}
+
 .bigger{
-    margin-left: 0.3em;
     display: inline-block;
     font-size: 3em;
-    color: #fff;
+    color: #ffffff;
 }
 
 .smaller{
     display: inline-block;
     font-size: 2.5em;
-    color: #fff;
+    color: #ffffff;
+}
+
+#player-turn{
+    text-align: center;
+    margin:1em;
+    font-size: 1.5em;
+    color: #ffffff;
 }
 
 #grid {
-    color:#fff;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    display:grid;
+    text-align: center;
+    margin-top: 3.5em;
+    color:#ffffff;
+    grid-template-columns: repeat(6, minmax(15%, 1fr));
+    gap: 1em 1em;
+}
+
+.grid-category, .grid-item {
+    outline: 0.2em solid #1B5176;
+}
+
+input{
+    display:block;
+    margin: 4.5em auto 0 auto;
+    padding: 0.4em 0.8em;
+}
+
+#buttons{
+    display:flex;
+    justify-content: center;
+}
+
+button{
+    color:#ffffff;
+    background-color: #1B5176;
+    border: none;
+    border-radius: 2px;
+    margin: 2em 0.4em 0;
+    font-size: 1em;
+    padding: 0.4em 0.8em;
+    letter-spacing: 0.1em;
+}
+
+button:hover {
+    color:#010B12;
+    background-color: #5EBDF3;
+}
+
+#score{
+    display:flex;
+    justify-content: space-around;
+    margin-top:5em;
+}
+
+span{
+    color: #ffffff;
+}
+
+#next-page{
+    margin-top: 5em;
+    margin-left:60%;
 }
 
 footer{
-    position: absolute;
-    bottom: 2%;
-    width:60%;
-    margin:auto;
+    position:relative;
+    bottom: 1em;
+    margin: 5em auto;
+    width:80%;
     background-color: #1B5176;
 }

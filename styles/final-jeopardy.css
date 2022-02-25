@@ -11,7 +11,7 @@ body{
     font-family: Hack, sans-serif;
     height: max-content;
     max-height: 100%;
-    max-width: 80%;
+    max-width: 60%;
     margin: 0 auto;
 }
 
@@ -39,26 +39,39 @@ body{
     color: #ffffff;
 }
 
-#grid {
-    display:grid;
-    text-align: center;
-    margin-top: 3.5em;
-    color:#ffffff;
-    grid-template-columns: repeat(6, minmax(15%, 1fr));
-    gap: 1em 1em;
+#final-category{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin:1em auto 1em auto;
+    height:2em;
+    width:60%;
+    font-size: 1em;
+    outline: 0.2em solid #1B5176;
+    color: #ffffff;
 }
 
-.grid-category, .grid-item {
+
+#final-question{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin:1em auto 1em auto;
+    height:10em;
+    width:60%;
+    font-size: 1em;
+    color: #ffffff;
     outline: 0.2em solid #1B5176;
 }
 
+
 input{
     display:block;
-    margin: 4.5em auto 0 auto;
+    margin: 2em auto 0 auto;
     padding: 0.4em 0.8em;
 }
 
-#buttons{
+#button{
     display:flex;
     justify-content: center;
 }
@@ -77,21 +90,6 @@ button{
 button:hover {
     color:#010B12;
     background-color: #5EBDF3;
-}
-
-#score{
-    display:flex;
-    justify-content: space-around;
-    margin-top:5em;
-}
-
-span{
-    color: #ffffff;
-}
-
-#next-page{
-    margin-top: 5em;
-    margin-left:60%;
 }
 
 footer{
