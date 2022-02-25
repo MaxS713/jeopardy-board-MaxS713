@@ -9,52 +9,58 @@ html{
 body{
     background-color: #010B12;
     font-family: Hack, sans-serif;
-    height: max-content;
     max-height: 100%;
-    max-width: 80%;
+    max-width: 100%;
     margin: 0 auto;
 }
 
-#title{
-    margin-top: 5em;
-    text-align: center;
+main {
+    margin: 1vh auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .bigger{
+    margin-left: 2vmax;
     display: inline-block;
-    font-size: 3em;
-    color: #ffffff;
+    font-size: 4vmax;
+    color: #fff;
 }
 
 .smaller{
     display: inline-block;
-    font-size: 2.5em;
-    color: #ffffff;
+    font-size: 3vmax;
+    color: #fff;
 }
 
 #player-turn{
     text-align: center;
-    margin:1em;
-    font-size: 1.5em;
+    margin:2vmax;
+    font-size: 2.5vmax;
     color: #ffffff;
 }
 
 #grid {
     display:grid;
     text-align: center;
-    margin-top: 3.5em;
+    margin-top: 1.5vh;
     color:#ffffff;
     grid-template-columns: repeat(6, minmax(15%, 1fr));
-    gap: 1em 1em;
+    gap: 1.5vmax 1.5vmax;
+    font-size: 1.5vmax;
+    
 }
 
 .grid-category, .grid-item {
-    outline: 0.2em solid #1B5176;
+    outline: 0.35vmax solid #1B5176;
+    padding: 0.2vw 1vw;
 }
 
 input{
     display:block;
-    margin: 4.5em auto 0 auto;
+    margin: 3vh auto 0 auto;
     padding: 0.4em 0.8em;
 }
 
@@ -68,7 +74,7 @@ button{
     background-color: #1B5176;
     border: none;
     border-radius: 2px;
-    margin: 2em 0.4em 0;
+    margin: 2vh 0.4em 0;
     font-size: 1em;
     padding: 0.4em 0.8em;
     letter-spacing: 0.1em;
@@ -81,23 +87,28 @@ button:hover {
 
 #score{
     display:flex;
-    justify-content: space-around;
-    margin-top:5em;
-}
-
-span{
+    justify-content: space-between;
+    margin-top: 5vh;
     color: #ffffff;
 }
 
+span{
+    margin-left: 10vw;
+    margin-right: 10vw;
+}
+
 #next-page{
-    margin-top: 5em;
     margin-left:60%;
 }
 
 footer{
-    position:relative;
-    bottom: 1em;
-    margin: 5em auto;
-    width:80%;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    bottom:1vh;
+    padding: 1vw;
+    width:60%;
     background-color: #1B5176;
 }
