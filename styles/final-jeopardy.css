@@ -45,7 +45,7 @@ main {
     margin:1em auto 1em auto;
     height:5.5vh;
     width:60%;
-    font-size: 1em;
+    font-size: 1.5vmax;
     outline: 0.2em solid #1B5176;
     color: #d7dadd;
 }
@@ -58,7 +58,7 @@ main {
     margin:1em auto 1em auto;
     height:15vh;
     width:60%;
-    font-size: 1em;
+    font-size: 1.5vmax;
     color: #d7dadd;
     outline: 0.2em solid #1B5176;
 }
@@ -69,7 +69,7 @@ input{
     display:block;
     margin: 3vh auto 0 auto;
     padding: 1vh 2vw;
-    font-size: 1.5vmax;
+    font-size: min(max(2vw), 20px);
 }
 
 #button{
@@ -83,7 +83,7 @@ button{
     border: none;
     border-radius: 2px;
     margin: 3vh 0.4em 0;
-    font-size: 3vh;
+    font-size: min(max(2.5vw), 25px);
     padding: 0.4em 0.8em;
     letter-spacing: 0.1em;
 }

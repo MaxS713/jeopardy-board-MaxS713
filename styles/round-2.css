@@ -37,6 +37,7 @@ main {
 
 #player-turn{
     text-align: center;
+    margin-top: 1.5vh;
     font-size: 2vmax;
     color: #d7dadd;
 }
@@ -44,7 +45,7 @@ main {
 #grid {
     display:grid;
     text-align: center;
-    margin-top: 2vh;
+    margin-top: 3vh;
     color:#d7dadd;
     grid-template-columns: repeat(6, minmax(15%, 1fr));
     gap: 1.5vmax 1.5vmax;
@@ -65,7 +66,7 @@ input{
     display:block;
     margin: 3vh auto 0 auto;
     padding: 1vh 2vw;
-    font-size: 1.5vmax;
+    font-size: min(max(2vw), 20px);
 }
 
 #buttons-score{
@@ -79,7 +80,7 @@ button{
     border: none;
     border-radius: 2px;
     margin: 2vh 0.4em 0;
-    font-size: 1em;
+    font-size: min(max(2vw), 20px);
     padding: 0.4em 0.8em;
     letter-spacing: 0.1em;
 }
@@ -91,6 +92,7 @@ button:hover {
 
 span{
     color: #d7dadd;
+    font-size: min(max(1.8vw), 18px);
     margin-left: 10vw;
     margin-right: 10vw;
 }

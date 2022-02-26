@@ -9,7 +9,7 @@ I found that in general a wrapping width of 80% with some auto left-right
 margin, is more comfortable to the eye */
 body{
     background-color: #010B12;
-    font-family:Helvetica; /*Helvetica is a nice neutral font*/
+    font-family: Helvetica; /*Helvetica is a nice neutral font*/
     max-height: 100%;
     max-width: 80%;
     margin: 0 auto;
@@ -22,11 +22,15 @@ main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: 90%;
     width: 80%;
     position: absolute;
-    line-height: 7vw; /*I found that vmax, vh and vw were my best friends for responsiveness!
-    I have them throughout the project*/
+    line-height: min(max(7vw), 70px); 
+    /*I found that vmax, vh and vw were my best friends for responsiveness!
+    I have them throughout the project 
+    But I also noticed things can get disproportionately huge on high resolution screens - 
+    I saw online that this min max helps clamp the 
+    max size things can get*/
 }
 
 /*The color of the title*/
@@ -37,14 +41,14 @@ main {
 /* I wanted the first line of the title to
 be a little pushed to the right */
 .title-first-line{
-    margin-left: 5vw;
+    margin-left: min(max(5vw), 50px);
     word-spacing: 0.5vw;
-    font-size: 4vw;
+    font-size: min(max(4vw), 40px);
 }
 
 /*And the first letter, bigger - found online that I could do this with this pseudoelement */
 .title-first-line::first-letter {
-    font-size: 6vw;
+    font-size: min(max(6vw), 60px);
 }
 
 /*I needed the numbers to be slightly smaller and slightly pushed to the right*/
@@ -52,14 +56,14 @@ be a little pushed to the right */
 of the title to not go to new line, but be inline...*/
 .num{
     display: inline-block;
-    font-size: 5vw;
+    font-size: min(max(5vw), 50px);
     margin-left: 0.5vmax; 
 }
 
 /*The dot of 2.0 is a different color and bigger*/
 .dot{
     display: inline-block;
-    font-size: 8vmax;
+    font-size: min(max(8vmax), 80px);
     color: #6CBCD6;
 }
 
@@ -69,12 +73,12 @@ I found it online - I hope I know and understand how to do this soon! */
 
 .noFlip{
     display: inline-block;
-    font-size: 9vw;
+    font-size: min(max(9vw), 90px);
 }
 
 .flip span {
     display: inline-block;
-    font-size: 6vw;
+    font-size: min(max(6vw), 60px);
     color: #d7dadd;
     animation: flip 6s infinite;
     animation-delay: calc(.45s * var(--i));
@@ -102,7 +106,7 @@ button{
     border-radius: 2px;
     margin-top: 3vh; /*I've been using margin-top a lot to separate elements and for them to not be 
     glued to each other, I reckon a better way would be to use flexbox with height? I'll work on that */
-    font-size: 2vh;
+    font-size: min(max(2vmax), 20px);
     font-weight: 550;
     padding: 0.4em 0.8em;
     letter-spacing: 0.1em;
