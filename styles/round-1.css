@@ -24,17 +24,17 @@ main {
 
 #title{
     line-height: 200%;
-    margin:3vh;
+    margin:3vh auto 0 auto;
 }
+
 .bigger{
     display: inline-block;
-    font-size: 2.5vmax;
-    color: #fff;
-
+    font-size: 2.5vw;
+    color: #ffffff;
 }
 
 .bigger::first-letter {
-    font-size: 3.5vmax;
+    font-size: 3.5vw;
 }
 
 #player-turn{
@@ -46,7 +46,7 @@ main {
 #grid {
     display:grid;
     text-align: center;
-    margin-top: 1.5vh;
+    margin-top: 2vh;
     color:#ffffff;
     grid-template-columns: repeat(6, minmax(15%, 1fr));
     gap: 1.5vmax 1.5vmax;
@@ -59,6 +59,10 @@ main {
     padding: 0.2vw 1vw;
 }
 
+.grid-category{
+    padding: 1.5vw 1vw;
+}
+
 input{
     display:block;
     margin: 3vh auto 0 auto;
@@ -66,7 +70,7 @@ input{
     font-size: 1.5vmax;
 }
 
-#buttons{
+#buttons-score{
     display:flex;
     justify-content: center;
 }
@@ -87,22 +91,36 @@ button:hover {
     background-color: #5EBDF3;
 }
 
-#score{
-    display:flex;
-    justify-content: space-between;
-    margin-top: 5vh;
-    color: #ffffff;
-}
-
 span{
+    color: #ffffff;
     margin-left: 10vw;
     margin-right: 10vw;
 }
 
 #next-page{
-    margin-left:60%;
+    position: absolute;
+    bottom:10%;
+    right:10%;
 }
 
+#rotate-phone {
+    display:none;
+}
+
+@media screen and (max-width: 500px) {
+    main{
+        display:none;
+    }
+    #rotate-phone {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color:#ffffff;
+    }
+}
 
 footer{
     text-align: center;

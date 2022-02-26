@@ -8,49 +8,51 @@ html{
 
 body{
     background-color: #010B12;
-    font-family: Hack, sans-serif;
+    font-family:Helvetica;
     max-height: 100%;
     max-width: 80%;
     margin: 0 auto;
 }
 
 main {
-    margin: 5vh auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    line-height: 200%;
+    height: 100%;
+    width: 80%;
+    position: absolute;
+    line-height: 7vw;
 }
 
 .bigger{
-    margin-left: 3vw;
+    margin-left: 5vw;
     display: inline-block;
     word-spacing: 0.5vw;
-    font-size: 2.5vmax;
+    font-size: 4vw;
     color: #fff;
 }
 
 .bigger::first-letter {
-    font-size: 3.5vmax;
+    font-size: 6vw;
 }
 
 .noFlip{
     display: inline-block;
-    font-size: 5vmax;
+    font-size: 9vw;
     color: #ffffff;
 }
 
 .num{
     display: inline-block;
-    font-size: 4vmax;
+    font-size: 5vw;
     color: #ffffff;
     margin: 0 0 0 0.5vmax; 
 }
 
 .waviy span {
     display: inline-block;
-    font-size: 3.5vmax;
+    font-size: 6vw;
     color: #ffffff;
     animation: flip 6s infinite;
     animation-delay: calc(.45s * var(--i));
@@ -69,8 +71,9 @@ main {
 }
 
 img {
-    max-width:30vmax;
-    margin: 3vmax auto;
+    margin-top: 4vh;
+    max-width:55vw;
+    max-height:35vh;
     opacity: 0.8;
 }
 
@@ -79,7 +82,8 @@ button{
     background-color: #1B5176;
     border: none;
     border-radius: 2px;
-    font-size: 1em;
+    margin-top: 3vh;
+    font-size: 2vh;
     font-weight: 550;
     padding: 0.4em 0.8em;
     letter-spacing: 0.1em;
@@ -90,7 +94,6 @@ button:hover {
     background-color: #5EBDF3;
 }
 
-
 footer{
     text-align: center;
     color:#010B12;
@@ -100,9 +103,8 @@ footer{
     margin-right: auto;
     left: 0;
     right: 0;
-    bottom:1vh;
+    bottom:2.5vh;
     padding: 0.8vh;
-    width:40%;
     background-color: #1B5176;
 }
 

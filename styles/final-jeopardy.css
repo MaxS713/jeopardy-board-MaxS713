@@ -95,6 +95,24 @@ button:hover {
     background-color: #5EBDF3;
 }
 
+#rotate-phone {
+    display:none;
+}
+
+@media screen and (max-width: 500px) {
+    main{
+        display:none;
+    }
+    #rotate-phone {
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color:#ffffff;
+    }
+}
 
 footer{
     text-align: center;
