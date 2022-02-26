@@ -99,11 +99,12 @@ span{
 }
 
 /*Don't think we'll need the link to the next page later, 
-for now it just sits in the bottom right corner*/
+for now it just sits in the top right corner (it would get in the way of the rest
+in the lower right corner on a phone screen)*/
 #next-page{
     position: absolute;
-    bottom:10%;
-    right:10%;
+    top:5%;
+    right:5%;
 }
 
 /*So the grid is very squished on portrait mode on a phone so, this system makes everything disapear
