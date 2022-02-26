@@ -1,19 +1,22 @@
-/* *{
-    border: 0.5px solid red;
-} */
-
+/* Not sure why height:100% was necessary for me 
+to be able to use the full length of the page */
 html{
     height: 100%;
 }
 
+/*General settings for the whole page,
+I found that in general a wrapping width of 80% with some auto left-right
+margin, is more comfortable to the eye */
 body{
     background-color: #010B12;
-    font-family:Helvetica;
+    font-family:Helvetica; /*Helvetica is a nice neutral font*/
     max-height: 100%;
     max-width: 80%;
     margin: 0 auto;
 }
 
+/* a flex box with everything centered for the title, image, and play button,
+made my life easier */
 main {
     display: flex;
     flex-direction: column;
@@ -22,46 +25,59 @@ main {
     height: 100%;
     width: 80%;
     position: absolute;
-    line-height: 7vw;
+    line-height: 7vw; /*I found that vmax, vh and vw were my best friends for responsiveness!
+    I have them throughout the project*/
 }
 
-.bigger{
+/*The color of the title*/
+#title{
+    color: #d7dadd;
+}
+
+/* I wanted the first line of the title to
+be a little pushed to the right */
+.title-first-line{
     margin-left: 5vw;
-    display: inline-block;
     word-spacing: 0.5vw;
     font-size: 4vw;
-    color: #fff;
 }
 
-.bigger::first-letter {
+/*And the first letter, bigger - found online that I could do this with this pseudoelement */
+.title-first-line::first-letter {
     font-size: 6vw;
 }
+
+/*I needed the numbers to be slightly smaller and slightly pushed to the right*/
+/*Also I needed all the diferent section
+of the title to not go to new line, but be inline...*/
+.num{
+    display: inline-block;
+    font-size: 5vw;
+    margin-left: 0.5vmax; 
+}
+
+/*The dot of 2.0 is a different color and bigger*/
+.dot{
+    display: inline-block;
+    font-size: 8vmax;
+    color: #6CBCD6;
+}
+
+
+/* I am not responsible for this title animation, 
+I found it online - I hope I know and understand how to do this soon! */
 
 .noFlip{
     display: inline-block;
     font-size: 9vw;
-    color: #ffffff;
 }
 
-.num{
-    display: inline-block;
-    font-size: 5vw;
-    color: #ffffff;
-    margin: 0 0 0 0.5vmax; 
-}
-
-.waviy span {
+.flip span {
     display: inline-block;
     font-size: 6vw;
-    color: #ffffff;
+    color: #d7dadd;
     animation: flip 6s infinite;
     animation-delay: calc(.45s * var(--i));
-}
-
-.color{
-    display: inline-block;
-    font-size: 8vmax;
-    color: #6CBCD6;
 }
 
 @keyframes flip {
@@ -70,30 +86,37 @@ main {
     }
 }
 
+/*We want the image to be an aceptable size*/
 img {
     margin-top: 4vh;
     max-width:55vw;
     max-height:35vh;
-    opacity: 0.8;
+    opacity: 0.8; /*The image blends a little with the background with this*/
 }
+
 
 button{
     color:#ffffff;
     background-color: #1B5176;
     border: none;
     border-radius: 2px;
-    margin-top: 3vh;
+    margin-top: 3vh; /*I've been using margin-top a lot to separate elements and for them to not be 
+    glued to each other, I reckon a better way would be to use flexbox with height? I'll work on that */
     font-size: 2vh;
     font-weight: 550;
     padding: 0.4em 0.8em;
     letter-spacing: 0.1em;
 }
 
+/*Button changes color when hovered on*/
 button:hover {
     color:#010B12;
     background-color: #5EBDF3;
 }
 
+/*footer style - struggled to have it stay at the bottom
+found that position absolute with different left, right, bottom attributes
+finally did the trick*/
 footer{
     text-align: center;
     color:#010B12;

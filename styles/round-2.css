@@ -1,6 +1,4 @@
-/* *{
-    border: 0.5px solid red;
-} */
+/*A copy paste of round1.css really*/
 
 html{
     height: 100%;
@@ -8,7 +6,7 @@ html{
 
 body{
     background-color: #010B12;
-    font-family: Hack, sans-serif;
+    font-family: Helvetica;
     max-height: 100%;
     max-width: 100%;
     margin: 0 auto;
@@ -30,7 +28,7 @@ main {
 .bigger{
     display: inline-block;
     font-size: 2.5vw;
-    color: #ffffff;
+    color: #d7dadd;
 }
 
 .bigger::first-letter {
@@ -40,14 +38,14 @@ main {
 #player-turn{
     text-align: center;
     font-size: 2vmax;
-    color: #ffffff;
+    color: #d7dadd;
 }
 
 #grid {
     display:grid;
     text-align: center;
     margin-top: 2vh;
-    color:#ffffff;
+    color:#d7dadd;
     grid-template-columns: repeat(6, minmax(15%, 1fr));
     gap: 1.5vmax 1.5vmax;
     font-size: 1.5vmax;
@@ -76,7 +74,7 @@ input{
 }
 
 button{
-    color:#ffffff;
+    color:#d7dadd;
     background-color: #1B5176;
     border: none;
     border-radius: 2px;
@@ -92,7 +90,7 @@ button:hover {
 }
 
 span{
-    color: #ffffff;
+    color: #d7dadd;
     margin-left: 10vw;
     margin-right: 10vw;
 }
@@ -118,7 +116,7 @@ span{
         left: 50%;
         transform: translate(-50%, -50%);
         text-align: center;
-        color:#ffffff;
+        color:#d7dadd;
     }
 }
 

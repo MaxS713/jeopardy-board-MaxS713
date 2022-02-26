@@ -1,6 +1,4 @@
-/* *{
-    border: 0.5px solid red;
-} */
+/*A lot of the same here too*/
 
 html{
     height: 100%;
@@ -8,7 +6,7 @@ html{
 
 body{
     background-color: #010B12;
-    font-family: Hack, sans-serif;
+    font-family: Helvetica;
     height: max-content;
     max-height: 100%;
     max-width: 60%;
@@ -26,7 +24,7 @@ main {
 .bigger{
     display: inline-block;
     font-size: 2.5vmax;
-    color: #fff;
+    color: #d7dadd;
 }
 
 .bigger::first-letter {
@@ -37,7 +35,7 @@ main {
     text-align: center;
     margin:2vh;
     font-size: 2vmax;
-    color: #ffffff;
+    color: #d7dadd;
 }
 
 #final-category{
@@ -49,7 +47,7 @@ main {
     width:60%;
     font-size: 1em;
     outline: 0.2em solid #1B5176;
-    color: #ffffff;
+    color: #d7dadd;
 }
 
 
@@ -61,7 +59,7 @@ main {
     height:15vh;
     width:60%;
     font-size: 1em;
-    color: #ffffff;
+    color: #d7dadd;
     outline: 0.2em solid #1B5176;
 }
 
@@ -80,7 +78,7 @@ input{
 }
 
 button{
-    color:#ffffff;
+    color:#d7dadd;
     background-color: #1B5176;
     border: none;
     border-radius: 2px;
@@ -110,7 +108,7 @@ button:hover {
         left: 50%;
         transform: translate(-50%, -50%);
         text-align: center;
-        color:#ffffff;
+        color:#d7dadd;
     }
 }
 

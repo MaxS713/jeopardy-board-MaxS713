@@ -1,6 +1,5 @@
-/* *{
-    border: 0.5px solid red;
-} */
+
+/*Nothing much different from the index.css - a lot of the same style...*/
 
 html{
     height: 100%;
@@ -8,7 +7,7 @@ html{
 
 body{
     background-color: #010B12;
-    font-family: Hack, sans-serif;
+    font-family: Helvetica;
     max-height: 100%;
     max-width: 100%;
     margin: 0 auto;
@@ -30,7 +29,7 @@ main {
 .bigger{
     display: inline-block;
     font-size: 2.5vw;
-    color: #ffffff;
+    color: #d7dadd;
 }
 
 .bigger::first-letter {
@@ -40,18 +39,20 @@ main {
 #player-turn{
     text-align: center;
     font-size: 2vmax;
-    color: #ffffff;
+    color: #d7dadd;
 }
 
+/*Jeopardy grid, you say? lemme use a grid layout*/
 #grid {
     display:grid;
     text-align: center;
     margin-top: 2vh;
-    color:#ffffff;
-    grid-template-columns: repeat(6, minmax(15%, 1fr));
+    color:#d7dadd;
+    grid-template-columns: repeat(6, minmax(15%, 1fr)); /*I used 15% because 100%/6 ≈ 15%, 
+    tried different things but I wasn't sure 
+    how else to have it be 6 columns that responsively fit in the whole width...*/
     gap: 1.5vmax 1.5vmax;
     font-size: 1.5vmax;
-    
 }
 
 .grid-category, .grid-item {
@@ -60,7 +61,7 @@ main {
 }
 
 .grid-category{
-    padding: 1.5vw 1vw;
+    padding: 1.5vw 1vw; /*More padding for the Category boxes*/ 
 }
 
 input{
@@ -76,7 +77,7 @@ input{
 }
 
 button{
-    color:#ffffff;
+    color:#d7dadd;
     background-color: #1B5176;
     border: none;
     border-radius: 2px;
@@ -92,33 +93,41 @@ button:hover {
 }
 
 span{
-    color: #ffffff;
+    color: #d7dadd;
     margin-left: 10vw;
     margin-right: 10vw;
 }
 
+/*Don't think we'll need the link to the next page later, 
+for now it just sits in the bottom right corner*/
 #next-page{
     position: absolute;
     bottom:10%;
     right:10%;
 }
 
-#rotate-phone {
+/*So the grid is very squished on portrait mode on a phone so, this system makes everything disapear
+and asks the user to rotate his phone - I found that a width<500px captures most devices*/
+
+#rotate-phone { /*If the screen is wide enough, the prompt to rotate the phone doesn't appear*/
     display:none;
 }
 
 @media screen and (max-width: 500px) {
     main{
-        display:none;
+        display:none; /*If the screen isn't wide enough, 
+        everything disapear exept for the prompt to rotate the phone*/
     }
-    #rotate-phone {
+    #rotate-phone { 
         display: block;
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); /*Found online that this was a way
+        to center something vertically and horizontaly - looked over-complicated for something simple
+        but it works*/
         text-align: center;
-        color:#ffffff;
+        color:#d7dadd;
     }
 }
 
