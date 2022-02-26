@@ -24,16 +24,13 @@ main {
 }
 
 .bigger{
-    margin-left: 2vmax;
     display: inline-block;
-    font-size: 4vmax;
+    font-size: 2.5vmax;
     color: #fff;
 }
 
-.smaller{
-    display: inline-block;
-    font-size: 3vmax;
-    color: #fff;
+.bigger::first-letter {
+    font-size: 3.5vmax;
 }
 
 #player-turn{
@@ -69,10 +66,12 @@ main {
 }
 
 
+
 input{
     display:block;
-    margin: 2vh auto 0 auto;
-    padding: 0.4em 0.8em;
+    margin: 3vh auto 0 auto;
+    padding: 1vh 2vw;
+    font-size: 1.5vmax;
 }
 
 #button{
@@ -85,7 +84,7 @@ button{
     background-color: #1B5176;
     border: none;
     border-radius: 2px;
-    margin: 2vh 0.4em 0;
+    margin: 3vh 0.4em 0;
     font-size: 3vh;
     padding: 0.4em 0.8em;
     letter-spacing: 0.1em;
@@ -96,14 +95,18 @@ button:hover {
     background-color: #5EBDF3;
 }
 
+
 footer{
+    text-align: center;
+    color:#010B12;
     position: absolute;
+    font-size: 2vh;
     margin-left: auto;
     margin-right: auto;
     left: 0;
     right: 0;
     bottom:1vh;
-    padding: 1vw;
-    width:60%;
+    padding: 0.8vh;
+    width:40%;
     background-color: #1B5176;
 }
