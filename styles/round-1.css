@@ -28,18 +28,18 @@ main {
 
 .bigger{
     display: inline-block;
-    font-size: 2.5vw;
+    font-size: min(max(4vw), 40px);
     color: #d7dadd;
 }
 
 .bigger::first-letter {
-    font-size: 3.5vw;
+    font-size: min(max(5vw), 50px);
 }
 
 #player-turn{
     margin-top: 1.5vh;
     text-align: center;
-    font-size: 2vmax;
+    font-size: min(max(2.5vw), 25px);
     color: #d7dadd;
 }
 
@@ -47,8 +47,8 @@ main {
 #grid {
     display:grid;
     text-align: center;
-    margin-top: 3vh;
-    color:#d7dadd;
+    margin-top: 4vh;
+    width:80%;
     grid-template-columns: repeat(6, minmax(15%, 1fr)); /*I used 15% because 100%/6 ≈ 15%, 
     tried different things but I wasn't sure 
     how else to have it be 6 columns that responsively fit in the whole width...*/
@@ -56,18 +56,44 @@ main {
     font-size: 1.5vmax;
 }
 
-.grid-category, .grid-item {
-    outline: 0.3vmax solid #1B5176;
-    padding: 0.2vw 1vw;
+.grid-category {
+    font-size: 1.2vw;
+    background-color: #031524;
+    outline: 2px solid #1B5176;
+    color:#c7d9ec;
+    border-radius: 0.5px;
+    padding: 1.5vw 1vw;
 }
 
-.grid-category{
-    padding: 1.5vw 1vw; /*More padding for the Category boxes*/ 
+.grid-item {
+    outline: 2.5px solid #031524;
+    border-radius: 0.5px;
+    padding: 0.5vh;
+}
+
+.one {
+    color:#808385;
+}
+
+.two{
+    color:#576e80;
+}
+
+.three{
+    color:#41647e;
+}
+
+.four{
+    color:#2b5979;
+}
+
+.five{
+    color:#1B5176;
 }
 
 input{
     display:block;
-    margin: 3vh auto 0 auto;
+    margin: 4vh auto 0 auto;
     padding: 1vh 2vw;
     font-size: min(max(2vw), 20px);
 }
