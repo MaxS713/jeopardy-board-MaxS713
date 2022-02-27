@@ -1,4 +1,4 @@
-/* Not sure why height:100% was necessary for me 
+/* Not sure why but height:100% was necessary for me 
 to be able to use the full length of the page */
 html{
     height: 100%;
@@ -27,10 +27,10 @@ main {
     position: absolute;
     line-height: min(max(7vw), 70px); 
     /*I found that vmax, vh and vw were my best friends for responsiveness!
-    I have them throughout the project 
+    I have them throughout the project.
     But I also noticed things can get disproportionately huge on high resolution screens - 
-    I saw online that this min max helps clamp the 
-    max size things can get*/
+    I saw online that this min max function is a solution to help clamp the 
+    maximum size things can get*/
 }
 
 /*The color of the title*/
@@ -53,7 +53,7 @@ be a little pushed to the right */
 
 /*I needed the numbers to be slightly smaller and slightly pushed to the right*/
 /*Also I needed all the diferent section
-of the title to not go to new line, but be inline...*/
+of the title to not go to a new line, but be inline...*/
 .num{
     display: inline-block;
     font-size: min(max(5vw), 50px);
@@ -64,12 +64,12 @@ of the title to not go to new line, but be inline...*/
 .dot{
     display: inline-block;
     font-size: min(max(8vmax), 80px);
-    color: #6CBCD6;
+    color: #1B5176;
 }
 
 
-/* I am not responsible for this title animation, 
-I found it online - I hope I know and understand how to do this soon! */
+/* I am not responsible for this title animation, I found it online.
+I hope I know and understand how to do this soon! I tried to tinker with it a bit though */
 
 .noFlip{
     display: inline-block;
@@ -80,12 +80,17 @@ I found it online - I hope I know and understand how to do this soon! */
     display: inline-block;
     font-size: min(max(6vw), 60px);
     color: #d7dadd;
-    animation: flip 6s infinite;
+    animation: flip 12s infinite;
     animation-delay: calc(.45s * var(--i));
 }
 
 @keyframes flip {
-    0%,80% {
+    20%, 40% {
+        color:#1B5176;
+        transform: rotateY(360deg);
+    }
+    80%, 100% {
+        color:#d7dadd;
         transform: rotateY(360deg);
     }
 }
@@ -95,17 +100,17 @@ img {
     margin-top: 4vh;
     max-width:55vw;
     max-height:35vh;
-    opacity: 0.8; /*The image blends a little with the background with this*/
+    opacity: 0.8; /*The image blends a little with the background thanks to this*/
 }
 
 
 button{
-    color:#ffffff;
+    color:#d7dadd;
     background-color: #1B5176;
     border: none;
     border-radius: 2px;
     margin-top: 3vh; /*I've been using margin-top a lot to separate elements and for them to not be 
-    glued to each other, I reckon a better way would be to use flexbox with height? I'll work on that */
+    glued to each other, I reckon a better way would be to use the flexbox with height? I'll work on that */
     font-size: min(max(2vmax), 20px);
     font-weight: 550;
     padding: 0.4em 0.8em;
@@ -118,20 +123,20 @@ button:hover {
     background-color: #5EBDF3;
 }
 
-/*footer style - struggled to have it stay at the bottom
-found that position absolute with different left, right, bottom attributes
+/*footer style - I struggled to have it stay at the bottom...
+I found that position absolute with different left, right, bottom attributes
 finally did the trick*/
 footer{
-    text-align: center;
-    color:#010B12;
     position: absolute;
-    font-size: 2vh;
-    margin-left: auto;
-    margin-right: auto;
     left: 0;
     right: 0;
     bottom:2.5vh;
+    margin-left: auto;
+    margin-right: auto; 
     padding: 0.8vh;
+    text-align: center;
+    font-size: 2vh;
+    color:#010B12;
     background-color: #1B5176;
 }
 
