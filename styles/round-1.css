@@ -52,8 +52,8 @@ main {
     grid-template-columns: repeat(6, minmax(15%, 1fr)); /*I used 15% because 100%/6 ≈ 15%, 
     I tried different things but I wasn't sure 
     how else to have it be 6 columns that responsively fit in the whole width...*/
-    gap: 1.5vmax 1.5vmax;
-    font-size: 1.5vmax;
+    gap: 1vmax 1vmax;
+    font-size: 1.3vmax;
 }
 
 .grid-category {
@@ -123,8 +123,8 @@ button:hover {
 span{
     color: #d7dadd;
     font-size: min(max(1.8vw), 18px);
-    margin-left: 10vw;
-    margin-right: 10vw;
+    margin-left: 13vw;
+    margin-right: 13vw;
 }
 
 /*Don't think we'll need the link to the next page later, 

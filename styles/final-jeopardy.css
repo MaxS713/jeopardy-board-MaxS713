@@ -68,7 +68,7 @@ main {
 
 input{
     display:block;
-    margin-top: 3vh;
+    margin-top: 2.5vh;
     padding: 1vh 2vw;
     font-size: min(max(1.8vw), 18px);
 }
@@ -83,7 +83,7 @@ button{
     background-color: #1B5176;
     border: none;
     border-radius: 2px;
-    margin: 3vh 0.4em 0;
+    margin: 2vh 0.4em 0;
     font-size: min(max(2.5vw), 25px);
     padding: 0.4em 0.8em;
     letter-spacing: 0.1em;
