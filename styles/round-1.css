@@ -32,9 +32,6 @@ main {
     color: #d7dadd;
 }
 
-.bigger::first-letter {
-    font-size: min(max(5vw), 50px);
-}
 
 #player-turn{
     margin-top: 1.5vh;
@@ -69,6 +66,12 @@ main {
     outline: 2.5px solid #031524;
     border-radius: 0.5px;
     padding: 0.5vh;
+}
+
+.grid-item:hover {
+
+    background-color: #0a1c2b;
+    cursor: pointer;
 }
 
 /*Created a gradient for the 100 to 500 boxes*/
@@ -175,4 +178,49 @@ footer{
     padding: 0.8vh;
     width:40%;
     background-color: #1B5176;
+}
+
+.grid-link{
+    text-decoration: none;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    transition: opacity 500ms;
+    display: none;
+}
+
+.popup {
+    margin: 20% auto;
+    padding: 20px;
+    background:#031524;
+    outline: 2px solid #1B5176;
+    border-radius: 0.5rem;
+    width: 50%;
+    color:#d7dadd;
+}
+
+.popup h2 {
+    margin-top: 0;
+    color: #d7dadd;
+}
+
+.popup .close:hover {
+    color: #d7dadd;
+}
+
+.popup .content {
+    max-height: 30%;
+    overflow: auto;
+}
+
+@media screen and (max-width: 700px){
+    .popup{
+    width: 70%;
+    }
 }

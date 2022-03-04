@@ -31,9 +31,6 @@ main {
     color: #d7dadd;
 }
 
-.bigger::first-letter {
-    font-size: min(max(5vw), 50px);
-}
 
 #player-turn{
     margin-top: 1.5vh;
@@ -65,6 +62,11 @@ main {
     outline: 2.5px solid #031524;
     border-radius: 0.5px;
     padding: 0.5vh;
+}
+
+.grid-item:hover {
+    background-color: #0a1c2b;
+    cursor: pointer;
 }
 
 .one {

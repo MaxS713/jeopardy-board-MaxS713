@@ -11,8 +11,7 @@
   <body>
     <main>
       <div id="title">
-        <div class="bigger">FIRST</div>
-        <div class="bigger">ROUND</div>
+        <div class="bigger">FIRST ROUND</div>
       <div id="player-turn">PLAYER TURN</div>
       </div>
 
@@ -23,12 +22,12 @@
         <div class="grid-category">CATEGORY</div>
         <div class="grid-category">CATEGORY</div>
         <div class="grid-category">CATEGORY</div>
-        <div class="grid-item one">100</div>
-        <div class="grid-item one">100</div>
-        <div class="grid-item one">100</div>
-        <div class="grid-item one">100</div>
-        <div class="grid-item one">100</div>
-        <div class="grid-item one">100</div>
+        <div class="grid-item one" id="1">100</div>
+        <div class="grid-item one" id="2">100</div>
+        <div class="grid-item one" id="3">100</div>
+        <div class="grid-item one" id="4">100</div>
+        <div class="grid-item one" id="5">100</div>
+        <div class="grid-item one" id="6">100</div>
         <div class="grid-item two">200</div>
         <div class="grid-item two">200</div>
         <div class="grid-item two">200</div>
@@ -64,6 +63,14 @@
         <span>Player 2 Score: </span>
       </div>
 
+      <div id="overlay">
+        <div class="popup">
+          <h2>Question</h2>
+          <div class="content">
+            Question Text
+          </div>
+        </div>
+      </div>
 
       <div id="next-page">
         <a href="round-2.html"><button>Next Round</button></a>
@@ -74,5 +81,8 @@
     <div id="rotate-phone"><p>Please zoom out or rotate your phone to landscape mode</p></div>
 
     <footer>Jeopardy project - BCA SDB - Feb 2022</footer>
+    
+    <script src="scripts/index.js"></script>
+
   </body>
 </html>
