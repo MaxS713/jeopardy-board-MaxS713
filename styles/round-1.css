@@ -95,32 +95,8 @@ main {
     color:#1B5176;
 }
 
-input{
-    display:block;
-    margin: 4vh auto 0 auto;
-    padding: 1vh 2vw;
-    font-size: min(max(2vw), 20px);
-}
-
-#buttons-score{
-    display:flex;
-    justify-content: center;
-}
-
-button{
-    color:#d7dadd;
-    background-color: #1B5176;
-    border: none;
-    border-radius: 2px;
-    margin: 2vh 0.4em 0;
-    font-size: min(max(2vw), 20px);
-    padding: 0.4em 0.8em;
-    letter-spacing: 0.1em;
-}
-
-button:hover {
-    color:#010B12;
-    background-color: #5EBDF3;
+#player-scores{
+    margin: 3vh;
 }
 
 span{
@@ -129,6 +105,10 @@ span{
     margin-left: 13vw;
     margin-right: 13vw;
 }
+
+
+
+
 
 /*Don't think we'll need the link to the next page later, 
 for now it just sits in the top right corner (it was getting in the way of the rest
@@ -195,32 +175,63 @@ footer{
     display: none;
 }
 
-.popup {
+#popup {
     margin: 20% auto;
-    padding: 20px;
+    width: 50%;
+    color:#d7dadd;
+    width: 50%;
+}
+
+#question-box{
     background:#031524;
     outline: 2px solid #1B5176;
     border-radius: 0.5rem;
-    width: 50%;
-    color:#d7dadd;
+    padding: 20px;
 }
 
-.popup h2 {
+#popup h2 {
     margin-top: 0;
     color: #d7dadd;
 }
 
-.popup .close:hover {
-    color: #d7dadd;
-}
-
-.popup .content {
+#popup #question-content {
     max-height: 30%;
     overflow: auto;
 }
 
-@media screen and (max-width: 700px){
-    .popup{
-    width: 70%;
-    }
+input{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin: 4vh auto 0 auto;
+    padding: 1vh 2vw;
+    font-size: min(max(2vw), 20px);
 }
+
+#buttons{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button{
+    color:#d7dadd;
+    background-color: #1B5176;
+    border: none;
+    border-radius: 2px;
+    margin: 2vh 0.4em;
+    font-size: min(max(2vw), 20px);
+    padding: 0.4em 0.8em;
+    letter-spacing: 0.1em;
+}
+
+button:hover {
+    color:#010B12;
+    background-color: #5EBDF3;
+}
+
+#answer-correct{
+text-align: center;
+margin: 2vh auto;
+}
+
