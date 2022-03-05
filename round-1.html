@@ -12,7 +12,7 @@
     <main>
       <div id="title">
         <div class="bigger">FIRST ROUND</div>
-        <div id="player-turn">PLAYER TURN</div>
+        <div id="player-turn"></div>
       </div>
 
       <div id="grid">
@@ -55,27 +55,27 @@
       </div>
 
       <div id="player-scores">
-      <span>Player 1 Score: </span>
-      <span>Player 2 Score: </span>
+      <span id="player-one-score">Player 1 Score: 0</span>
+      <span id="player-two-score">Player 2 Score: 0</span>
       </div>
 
       <div id="overlay">
         <div id="popup">
 
           <div id="question-box">
-            <h2>Question</h2>
+            <h2 id="question-header">Question</h2>
             <div id="question-content">
               Question Text
             </div>
           </div>
         
         <form id="answer-form">
-        <input id="answer-input" type="text" placeholder="User Input..." />
+        <input id="answer-input" type="text" autocomplete="off" placeholder="User Input..." />
         <div id="buttons">
           <button id="submit-button" type="submit">Guess</button>
-          <button>Pass</button>
+          <button id="pass-button">Pass</button>
         </div>
-        </form>
+        </form>  
         <h2 id="answer-correct"></h2>
 
       </div>
