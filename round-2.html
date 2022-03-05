@@ -14,10 +14,8 @@
       
       <div id="title">
         <div class="bigger">SECOND ROUND</div>
-        <div id="player-turn">PLAYER TURN</div>
+        <div id="player-turn"></div>
       </div>
-
-
 
       <div id="grid">
         <div class="grid-category">CATEGORY</div>
@@ -58,23 +56,45 @@
         <div class="grid-item five">1000</div>
       </div>
 
-      <input placeholder="User Input..." />
-
-      <div id="buttons-score">
-        <span>Player 1 Score: </span>
-        <button>Guess</button>
-        <button>Pass</button>
-        <span>Player 2 Score: </span>
+      <div id="player-scores">
+        <span id="player-one-score">Player 1 Score: 0</span>
+        <span id="player-two-score">Player 2 Score: 0</span>
+        </div>
+  
+        <div id="overlay">
+          <div id="popup">
+  
+            <div id="popup-box">
+              <h2 id="popup-header"></h2>
+              <div id="popup-content"></div>
+            </div>
+          
+          <form id="answer-form">
+          <input id="answer-input" type="text" autocomplete="off" placeholder="User Input..." />
+          <div id="buttons">
+            <button id="submit-button" type="submit">Guess</button>
+            <button id="pass-button">Pass</button>
+          </div>
+          </form>  
+          <h2 id="answer-correct"></h2>
+  
+        </div>
       </div>
+  
+        <div id="next-page">
+          <a href="/round-2.html?roundNumber=2&playerOneTurn=true&playerTwoTurn=false&playerOneScore=200\
+          &playerTwoScore=200"><button>Reset Round</button></a>
+        </div>
 
-      <div id="next-page">
-        <a href="final-jeopardy.html"><button>Next Round</button></a>
-      </div>
-    </main>
-
-    <div id="rotate-phone"><p>Please zoom out or rotate your phone to landscape mode</p></div>
-
-    <footer>Jeopardy project - BCA SDB - Feb 2022</footer>
-
+          
+        </div>
+        
+      </main>
+  
+      <div id="rotate-phone"><p>Please zoom out or rotate your phone to landscape mode</p></div>
+  
+      <footer>Jeopardy project - BCA SDB - Feb 2022</footer>
+      
+      <script src="scripts/index.js"></script>
   </body>
 </html>

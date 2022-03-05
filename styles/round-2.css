@@ -1,4 +1,5 @@
-/*A copy paste of round1.css really*/
+
+/*Nothing much different from the index.css - a lot of the same style...*/
 
 html{
     height: 100%;
@@ -26,25 +27,33 @@ main {
 }
 
 .bigger{
-    display: inline-block;
-    font-size: min(max(4vw), 40px);
+    text-align: center;
+    font-size: min(max(3.5vw), 40px);
     color: #d7dadd;
 }
 
+#player-turn {
+    margin-top: 2.5vh;
+    font-size: min(max(2.3vw), 25px);
+    color: #d7dadd;
+}
 
-#player-turn{
+.subtitle{
     margin-top: 1.5vh;
     text-align: center;
-    font-size: min(max(2.5vw), 25px);
+    font-size: min(max(2vw), 25px);
     color: #d7dadd;
 }
 
+/*Jeopardy grid, you say? lemme use a grid layout*/
 #grid {
     display:grid;
     text-align: center;
     margin-top: 4vh;
     width:80%;
-    grid-template-columns: repeat(6, minmax(15%, 1fr));
+    grid-template-columns: repeat(6, minmax(15%, 1fr)); /*I used 15% because 100%/6 ≈ 15%, 
+    I tried different things but I wasn't sure 
+    how else to have it be 6 columns that responsively fit in the whole width...*/
     gap: 1vmax 1vmax;
     font-size: 1.3vmax;
 }
@@ -69,52 +78,35 @@ main {
     cursor: pointer;
 }
 
+.grid-grayout{
+    outline: 5px solid red;
+    opacity:0.5;
+    pointer-events: none;
+}
+
+/*Created a gradient for the 100 to 500 boxes*/
 .one {
     color:#808385;
 }
 
-.two{
+.two {
     color:#576e80;
 }
 
-.three{
+.three {
     color:#41647e;
 }
 
-.four{
+.four {
     color:#2b5979;
 }
 
-.five{
+.five {
     color:#1B5176;
 }
 
-input{
-    display:block;
-    margin: 4vh auto 0 auto;
-    padding: 1vh 2vw;
-    font-size: min(max(2vw), 20px);
-}
-
-#buttons-score{
-    display:flex;
-    justify-content: center;
-}
-
-button{
-    color:#d7dadd;
-    background-color: #1B5176;
-    border: none;
-    border-radius: 2px;
-    margin: 2vh 0.4em 0;
-    font-size: min(max(2vw), 20px);
-    padding: 0.4em 0.8em;
-    letter-spacing: 0.1em;
-}
-
-button:hover {
-    color:#010B12;
-    background-color: #5EBDF3;
+#player-scores{
+    margin: 3vh;
 }
 
 span{
@@ -124,26 +116,40 @@ span{
     margin-right: 13vw;
 }
 
+
+
+
+
+/*Don't think we'll need the link to the next page later, 
+for now it just sits in the top right corner (it was getting in the way of the rest
+on a phone screen when it was in the lower right corner )*/
 #next-page{
     position: absolute;
     top:5%;
     right:5%;
 }
 
-#rotate-phone {
+
+/*So the grid was very squished on portrait mode on a phone so, this system makes everything disapear
+and asks the user to rotate his phone - I found that a width<500px should capture most scenarios*/
+
+#rotate-phone { /*If the screen is wide enough, the prompt to rotate the phone doesn't appear*/
     display:none;
 }
 
 @media screen and (max-width: 500px) {
     main{
-        display:none;
+        display:none; /*If the screen isn't wide enough, 
+        everything disapear exept for the prompt to rotate the phone*/
     }
-    #rotate-phone {
+    #rotate-phone { 
         display: block;
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); /*Found online that this was a way
+        to center something vertically and horizontaly - looks over-complicated for something so simple
+        but it works*/
         text-align: center;
         color:#d7dadd;
     }
@@ -163,3 +169,90 @@ footer{
     width:40%;
     background-color: #1B5176;
 }
+
+.grid-link{
+    text-decoration: none;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    transition: opacity 500ms;
+    display: none;
+}
+
+#popup {
+    margin: 20% auto;
+    width: 50%;
+    color:#d7dadd;
+    width: 50%;
+}
+
+#popup-box{
+    background:#031524;
+    outline: 2px solid #1B5176;
+    border-radius: 0.5rem;
+    padding: 20px;
+}
+
+#popup h2 {
+    margin-top: 0;
+    font-size: min(max(1.8vw), 20px);
+    color: #d7dadd;
+}
+
+#popup #popup-content {
+    max-height: 30%;
+    overflow: auto;
+}
+
+#popup-content{
+    font-style: italic;
+    margin-left:5vw;
+}
+
+input{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin: 4vh auto 0 auto;
+    padding: 1vh 2vw;
+    font-size: min(max(2vw), 20px);
+}
+
+#buttons{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button{
+    color:#d7dadd;
+    background-color: #1B5176;
+    border: none;
+    border-radius: 2px;
+    margin: 2vh 0.4em;
+    font-size: min(max(2vw), 20px);
+    padding: 0.4em 0.8em;
+    letter-spacing: 0.1em;
+}
+
+button:hover {
+    color:#010B12;
+    background-color: #5EBDF3;
+}
+
+button:disabled {
+    opacity:0.5;
+    pointer-events: none;
+}
+
+#answer-correct{
+text-align: center;
+margin: 2vh auto;
+}
+

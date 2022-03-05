@@ -192,7 +192,7 @@ footer{
     width: 50%;
 }
 
-#question-box{
+#popup-box{
     background:#031524;
     outline: 2px solid #1B5176;
     border-radius: 0.5rem;
@@ -205,12 +205,12 @@ footer{
     color: #d7dadd;
 }
 
-#popup #question-content {
+#popup #popup-content {
     max-height: 30%;
     overflow: auto;
 }
 
-#question-content{
+#popup-content{
     font-style: italic;
     margin-left:5vw;
 }
