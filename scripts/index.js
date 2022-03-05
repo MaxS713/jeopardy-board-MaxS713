@@ -18,9 +18,7 @@ let lastRoundQuestion;
 let firstRoundAnswersArray = [];
 let secondRoundAnswersArray = [];
 let lastRoundAnswer;
-let currentBox;
-let questionID;
-let boxScoreValue;
+let numberOfQuestionsGoneThrough = 0;
 
 let playerOne = {
   name: "Player One",
@@ -38,6 +36,13 @@ let playerTwo = {
   turnToGuess: false,
   hasGuessed: false,
 };
+
+// let params = new URLSearchParams(document.location.search);
+// let roundNumber = params.get("roundNumber");
+// playerOne.turnToPick = params.get("playerOneTurn");
+// playerTwo.turnToPick = params.get("playerTwoTurn");
+// playerOne.score = parseInt(params.get("playerOneScore"));
+// playerTwo.score = parseInt(params.get("playerTwoScore"));
 
 async function getData() {
   let questions = await fetch("json-file/placeholder-questions.json");
@@ -76,8 +81,9 @@ async function getData() {
 
   sortQuestions();
 }
-
 getData();
+
+
 
 let gridBoxes = document.getElementsByClassName("grid-item");
 let gridBoxesArray = [...gridBoxes];
@@ -93,9 +99,10 @@ if (playerOne.turnToPick === true) {
 }
 
 function popupQuestion() {
-  currentBox = this;
-  questionID = gridBoxesArray.indexOf(this);
-  boxScoreValue = parseInt(this.textContent);
+  let currentBox = this;
+  let questionID = gridBoxesArray.indexOf(this);
+  let boxScoreValue = parseInt(this.textContent);
+  let currentAnswer;
 
   questionDisplayBox.style.display = "block";
 
@@ -111,8 +118,17 @@ function popupQuestion() {
 
   playerOne.hasGuessed = false;
   playerTwo.hasGuessed = false;
-
-  questionContent.textContent = firstRoundQuestionsArray[questionID];
+  
+  if (roundNumber=1){
+    questionContent.textContent = firstRoundQuestionsArray[questionID];
+    currentAnswer = firstRoundAnswersArray[questionID];
+  } else if (roundNumber=2){
+    questionContent.textContent = secondRoundQuestionsArray[questionID];
+    currentAnswer = secondRoundAnswersArray[questionID];
+  } else if (roundNumber=3){
+    questionContent.textContent = lastRoundQuestion;
+    currentAnswer = lastRoundAnswer;
+  }
 
   submitButton.disabled = false;
   passButton.disabled = false;
@@ -120,109 +136,132 @@ function popupQuestion() {
   answerForm.reset();
   answerForm.addEventListener("submit", checkAnswer);
   passButton.addEventListener("click", pass);
-}
 
-function checkAnswer(event) {
-  event.preventDefault();
-  let answerEntered = answerInput.value;
-  let saniAnswerEntered = answerEntered.toLowerCase().trim();
-  let answerEnteredArray = saniAnswerEntered.split(" ");
-  if (answerEnteredArray.includes(firstRoundAnswersArray[questionID])) {
-    correctAnswer();
-  } else {
-    incorrectAnswer();
-  }
-}
-
-function correctAnswer() {
-  answerCorrect.textContent = "Correct!";
-  submitButton.disabled = true;
-  passButton.disabled = true;
-  if (playerOne.turnToGuess === true) {
-    playerOne.turnToPick = true;
-    playerTwo.turnToPick = false;
-    playerOne.score = playerOne.score + boxScoreValue;
-    playerOneScoreDisplay.textContent = `Player 1 Score: ${playerOne.score}`;
-    setTimeout(goBack, 3000);
-  } else if (playerTwo.turnToGuess === true) {
-    playerTwo.turnToPick = true;
-    playerOne.turnToPick = false;
-    playerTwo.score = playerTwo.score + boxScoreValue;
-    playerTwoScoreDisplay.textContent = `Player 2 Score: ${playerTwo.score}`;
-    setTimeout(goBack, 3000);
-  }
-}
-
-function incorrectAnswer() {
-  answerCorrect.textContent = "Incorrect...";
-
-  if (playerOne.turnToGuess === true) {
-    playerOne.hasGuessed = true;
-    playerOne.turnToGuess = false;
-    playerTwo.turnToGuess = true;
-    playerOne.score = playerOne.score - boxScoreValue;
-    if (playerOne.score < 0) {
-      playerOne.score = 0;
+  function checkAnswer(event) {
+    event.preventDefault();
+    let answerEntered = answerInput.value;
+    let saniAnswerEntered = answerEntered.toLowerCase().trim().replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"");
+    let sanitizedAnswer = currentAnswer.toLowerCase().replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g,"");
+    if (saniAnswerEntered.includes(sanitizedAnswer)) {
+      correctAnswer();
+    } else {
+      incorrectAnswer();
     }
-    playerOneScoreDisplay.textContent = `Player 1 Score: ${playerOne.score}`;
-  } else if (playerTwo.turnToGuess === true) {
-    playerTwo.hasGuessed = true;
-    playerTwo.turnToGuess = false;
-    playerOne.turnToGuess = true;
-    playerTwo.score = playerTwo.score - boxScoreValue;
-    if (playerTwo.score < 0) {
-      playerTwo.score = 0;
+  }
+
+  function correctAnswer() {
+    answerCorrect.textContent = "Correct!";
+    submitButton.disabled = true;
+    passButton.disabled = true;
+    if (playerOne.turnToGuess === true) {
+      playerOne.turnToPick = true;
+      playerTwo.turnToPick = false;
+      playerOne.score = playerOne.score + boxScoreValue;
+      playerOneScoreDisplay.textContent = `Player 1 Score: ${playerOne.score}`;
+      setTimeout(goBack, 3000);
+    } else if (playerTwo.turnToGuess === true) {
+      playerTwo.turnToPick = true;
+      playerOne.turnToPick = false;
+      playerTwo.score = playerTwo.score + boxScoreValue;
+      playerTwoScoreDisplay.textContent = `Player 2 Score: ${playerTwo.score}`;
+      setTimeout(goBack, 3000);
     }
-    playerTwoScoreDisplay.textContent = `Player 2 Score: ${playerTwo.score}`;
   }
-  submitButton.disabled = true;
-  passButton.disabled = true;
-  setTimeout(askOtherPlayer, 2000);
-}
 
-function pass(event) {
-  event.preventDefault();
-  console.log(playerOne);
-  console.log(playerTwo);
-  if (playerOne.hasGuessed === true && playerTwo.hasGuessed === true) {
-    giveAnswer();
-  } else if (playerOne.turnToGuess === true) {
-    playerOne.hasGuessed = true;
-    playerOne.turnToGuess = false;
-    playerTwo.turnToGuess = true;
-    askOtherPlayer();
-  } else if (playerTwo.turnToGuess === true) {
-    playerTwo.hasGuessed = true;
-    playerTwo.turnToGuess = false;
-    playerOne.turnToGuess = true;
-    askOtherPlayer();
+  function incorrectAnswer() {
+    answerCorrect.textContent = "Incorrect...";
+
+    if (playerOne.turnToGuess === true) {
+      playerOne.hasGuessed = true;
+      playerOne.turnToGuess = false;
+      playerTwo.turnToGuess = true;
+      playerOne.score = playerOne.score - boxScoreValue;
+      if (playerOne.score < 0) {
+        playerOne.score = 0;
+      }
+      playerOneScoreDisplay.textContent = `Player 1 Score: ${playerOne.score}`;
+    } else if (playerTwo.turnToGuess === true) {
+      playerTwo.hasGuessed = true;
+      playerTwo.turnToGuess = false;
+      playerOne.turnToGuess = true;
+      playerTwo.score = playerTwo.score - boxScoreValue;
+      if (playerTwo.score < 0) {
+        playerTwo.score = 0;
+      }
+      playerTwoScoreDisplay.textContent = `Player 2 Score: ${playerTwo.score}`;
+    }
+    submitButton.disabled = true;
+    passButton.disabled = true;
+    setTimeout(askOtherPlayer, 2000);
+  }
+
+  function pass(event) {
+    event.preventDefault();
+    if (playerOne.hasGuessed === true && playerTwo.hasGuessed === true) {
+      giveAnswer();
+    } else if (playerOne.turnToGuess === true) {
+      playerOne.hasGuessed = true;
+      playerOne.turnToGuess = false;
+      playerTwo.turnToGuess = true;
+      askOtherPlayer();
+    } else if (playerTwo.turnToGuess === true) {
+      playerTwo.hasGuessed = true;
+      playerTwo.turnToGuess = false;
+      playerOne.turnToGuess = true;
+      askOtherPlayer();
+    }
+  }
+
+  function askOtherPlayer() {
+    answerForm.reset();
+    answerCorrect.textContent = "";
+    submitButton.disabled = false;
+    passButton.disabled = false;
+
+    if (playerOne.turnToGuess === true && playerOne.hasGuessed === false) {
+      questionHeader.textContent = `${playerOne.name}, do you have the answer?`;
+    } else if (
+      playerTwo.turnToGuess === true &&
+      playerTwo.hasGuessed === false
+    ) {
+      questionHeader.textContent = `${playerTwo.name}, do you have the answer?`;
+    } else {
+      giveAnswer();
+    }
+  }
+
+  function giveAnswer() {
+    submitButton.disabled = true;
+    passButton.disabled = true;
+    questionHeader.textContent = `The answer was ${currentAnswer}!`;
+    setTimeout(goBack, 3000);
+  }
+
+  function goBack() {
+    numberOfQuestionsGoneThrough++
+    if (numberOfQuestionsGoneThrough === 2){
+      numberOfQuestionsGoneThrough = 0;
+      nextRound();
+    }
+    answerForm.removeEventListener("submit", checkAnswer);
+    passButton.removeEventListener("click", pass);
+    questionDisplayBox.style.display = "none";
+    currentBox.removeEventListener("click", popupQuestion);
+    currentBox.classList.add("grid-grayout");
+    if (playerOne.turnToPick === true) {
+      playerTurn.textContent = `${playerOne.name}, pick a question...`;
+    } else if (playerTwo.turnToPick === true) {
+      playerTurn.textContent = `${playerTwo.name}, pick a question...`;
+    }
   }
 }
 
-function askOtherPlayer() {
-  answerForm.reset();
-  answerCorrect.textContent = "";
-  submitButton.disabled = false;
-  passButton.disabled = false;
-
-  if (playerOne.turnToGuess === true && playerOne.hasGuessed === false) {
-    questionHeader.textContent = `${playerOne.name}, do you have the answer?`;
-  } else if (playerTwo.turnToGuess === true && playerTwo.hasGuessed === false) {
-    questionHeader.textContent = `${playerTwo.name}, do you have the answer?`;
-  } else {
-    giveAnswer();
-  }
+function nextRound(){
+  console.log(roundNumber)
+  document.location = `/round-2.html?roundNumber=${roundNumber}\
+  &playerOneTurn=${playerOne.turnToPick}\
+  &playerTwoTurn=${playerTwo.turnToPick}\
+  &playerOneScore=${playerOne.score}\
+  &playerTwoScore=${playerTwo.score}`;
 }
 
-function giveAnswer() {
-  submitButton.disabled = true;
-  passButton.disabled = true;
-  questionHeader.textContent = `The answer was ${firstRoundAnswersArray[questionID]}!`;
-  setTimeout(goBack, 3000);
-}
-
-function goBack() {
-  questionDisplayBox.style.display = "none";
-  currentBox.removeEventListener("click", popupQuestion);
-  currentBox.classList.add("grid-grayout");
-}
