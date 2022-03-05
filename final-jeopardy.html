@@ -12,28 +12,45 @@
     <main>
       
     <div id="title">
-      <div class="bigger">FINAL</div>
-      <div class="bigger">ROUND</div>
+      <div class="bigger">FINAL ROUND</div>
     </div>
 
-    <div id="player-turn">PLAYER TURN</div>
-
-    <div id="final-category">FINAL CATEGORY</div>
-
-    <div id="final-question">FINAL QUESTION</div>
-
-    <input placeholder="Point bet amount..." />
-    <input placeholder="Final anwer..." />
-
-    <div id="button">
-      <button>BET</button>
-    </div>
     
+    <div id="player-turn"></div>
+    <div id="score-to-bet"></div>
+
+    <div id="final-category"></div>
+
+    <div id="final-question"></div>
+    
+    <form id="answer-form">
+    <input id="bet-input" type="text" autocomplete="off" placeholder="Point bet amount..." />
+    <input id="answer-input" type="text" autocomplete="off" placeholder="Final anwer..." />
+      <div id="bet-button-area">
+    <button id="bet-button" type="submit">BET</button>
+      </div>
+    </form> 
+    <h2 id="notification" class = "notification"></h2>
+    <h2 id="notification-two" class = "notification"></h2>
+
+    <div id="overlay">
+      <div id="popup">
+        <div id="popup-box">
+          <h2 id="popup-header"></h2>
+          <div id="popup-content"></div>
+        </div>
+        <div id="buttons">
+          <button id="submit-button" type="submit">Guess</button>
+        </div>
+    </div>
+  </div>
   </main>
 
   <div id="rotate-phone"><p>Please zoom out or rotate your phone to landscape mode</p></div>
 
   <footer>Jeopardy project - BCA SDB - Feb 2022</footer>
+
+  <script src="scripts/index.js"></script>
 
   </body>
 </html>
