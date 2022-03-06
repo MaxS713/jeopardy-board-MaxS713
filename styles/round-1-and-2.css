@@ -22,12 +22,12 @@ main {
 }
 
 #title{
+    text-align: center;
     line-height: 200%;
     margin:3vh auto 0 auto;
 }
 
 .bigger{
-    text-align: center;
     font-size: min(max(3.5vw), 40px);
     color: #d7dadd;
 }
@@ -40,7 +40,6 @@ main {
 
 .subtitle{
     margin-top: 1.5vh;
-    text-align: center;
     font-size: min(max(2vw), 25px);
     color: #d7dadd;
 }
@@ -70,7 +69,7 @@ main {
 .grid-item {
     outline: 2.5px solid #031524;
     border-radius: 0.5px;
-    padding: 0.5vh;
+    padding: 0.4em;
 }
 
 .grid-item:hover {
@@ -79,12 +78,11 @@ main {
 }
 
 .grid-grayout{
-    outline: 5px solid red;
-    opacity:0.5;
+    background-color: rgb(35, 28, 43);
     pointer-events: none;
 }
 
-/*Created a gradient for the 100 to 500 boxes*/
+/*Gradient for the 100 to 500 boxes*/
 .one {
     color:#808385;
 }
@@ -186,32 +184,32 @@ footer{
 }
 
 #popup {
-    margin: 20% auto;
-    width: 50%;
+    margin: 30vh auto;
+    width: 60%;
     color:#d7dadd;
-    width: 50%;
 }
 
 #popup-box{
     background:#031524;
     outline: 2px solid #1B5176;
     border-radius: 0.5rem;
-    padding: 20px;
+    padding: 1em;
 }
 
 #popup h2 {
     margin-top: 0;
-    font-size: min(max(1.8vw), 20px);
+    font-size: min(max(2vw), 20px);
     color: #d7dadd;
 }
 
 #popup #popup-content {
-    max-height: 30%;
+    min-height: 30%;
     overflow: auto;
 }
 
 #popup-content{
     font-style: italic;
+    font-size: min(max(1.8vw), 20px);
     margin-left:5vw;
 }
 
