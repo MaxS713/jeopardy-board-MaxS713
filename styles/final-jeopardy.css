@@ -52,13 +52,12 @@ main {
     border-radius: 0.5px;
 }
 
-
-
 #final-question{
     display:flex;
     justify-content: center;
     align-items: center;
-    margin:1em auto 1em auto;
+    margin:2vh auto 1vh auto;
+    padding: 0 5vw;
     height:15vh;
     width:60%;
     font-size: 1.5vmax;

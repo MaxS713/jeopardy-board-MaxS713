@@ -40,11 +40,11 @@ let playerOne = {
 
 /*****Note:****
 I have whose turn it is to pick a question and whose turn it is to enter an answer
-different values... I had trouble getting around  
+different values because I had trouble getting around  
 the fact that both players could get a question wrong or pass  
-and then it would still be the first player's turn to pick a question 
+but then it would still be the first player's turn to pick a question 
 while it was player's two's turn last to guess. I was getting lost in if and elses statements
-and this made my lide easier.
+and this made my life easier.
 */
 
 let playerTwo = {
@@ -58,9 +58,10 @@ let playerTwo = {
 
 let params = new URLSearchParams(document.location.search);
 let roundNumber = parseInt(params.get("roundNumber"));
+playerOne.name = params.get("playerOneName");
+playerTwo.name = params.get("playerTwoName");
 playerOne.score = parseInt(params.get("playerOneScore"));
 playerTwo.score = parseInt(params.get("playerTwoScore"));
-console.log(params.get("playerOneTurn"));
 if (params.get("playerOneTurn") === "true") {
   playerOne.turnToPick = true;
   playerTwo.turnToPick = false;
@@ -69,8 +70,53 @@ if (params.get("playerOneTurn") === "true") {
   playerOne.turnToPick = false;
 }
 
-playerOneScoreDisplay.textContent = `Player 1 Score: ${playerOne.score}`;
-playerTwoScoreDisplay.textContent = `Player 2 Score: ${playerTwo.score}`;
+if (roundNumber === 0){
+  intro()
+}
+
+function intro(){
+  popUpBox.style.display = "block";
+  passButton.style.display = "none";
+  answerInput.style.display = "none";
+  answerInput.placeholder = "Player One's name"
+  popUpHeader.textContent = "Welcome to Jeopardy 2.0!";
+  popUpContent.textContent ="Thanks for playing - This is a two player game: answer questions, accumulate points, score more than your opponent to win!";
+  submitButton.textContent = "Ok";
+  submitButton.disabled = false;
+  answerForm.addEventListener("click", playerNamesInput);
+
+  function playerNamesInput(event){
+    event.preventDefault();
+    answerForm.removeEventListener("click", playerNamesInput);
+    answerForm.reset();
+    popUpContent.textContent = "First, let's get your names..."
+    answerInput.style.display = "block";
+    answerInput.placeholder = "Player One's name";
+    answerForm.addEventListener("submit", submitName);
+  }
+
+  function submitName(event){
+    event.preventDefault();
+    answerForm.removeEventListener("submit", submitName);
+    if (playerOne.name === null){
+      console.log(answerInput.value)
+      playerOne.name = answerInput.value;
+      answerForm.reset();
+      answerInput.placeholder = "Player Two's name";
+      answerForm.addEventListener("submit", submitName);
+    } else if (playerTwo.name === null){
+      console.log(answerInput.value)
+      playerTwo.name = answerInput.value;
+      document.location = `/round-1.html?roundNumber=1\
+&playerOneTurn=true\
+&playerTwoTurn=false\
+&playerOneScore=0\
+&playerTwoScore=0\
+&playerOneName=${playerOne.name}\
+&playerTwoName=${playerTwo.name}`
+    }
+  } 
+}
 
 async function getData() {
   let questions = await fetch("json-file/placeholder-questions.json");
@@ -108,10 +154,9 @@ async function getData() {
       }
     }
   }
-
   sortQuestions();
   if (roundNumber === 3) {
-    finalJeopardy();
+    return finalJeopardy();
   }
 }
 getData();
@@ -127,6 +172,11 @@ if (playerOne.turnToPick === true) {
   whichPlayerTurn.textContent = `${playerOne.name}, pick a question...`;
 } else if (playerTwo.turnToPick === true) {
   whichPlayerTurn.textContent = `${playerTwo.name}, pick a question...`;
+}
+
+if(playerOneScoreDisplay){
+playerOneScoreDisplay.textContent = `${playerOne.name}'s score: ${playerOne.score}`;
+playerTwoScoreDisplay.textContent = `${playerOne.name}'s score: ${playerTwo.score}`;
 }
 
 function popupQuestion() {
@@ -193,13 +243,13 @@ function popupQuestion() {
       playerOne.turnToPick = true;
       playerTwo.turnToPick = false;
       playerOne.score = playerOne.score + boxScoreValue;
-      playerOneScoreDisplay.textContent = `Player 1 Score: ${playerOne.score}`;
+      playerOneScoreDisplay.textContent = `${playerOne.name}'s score: ${playerOne.score}`;
       return setTimeout(goBack, 3000);
     } else if (playerTwo.turnToGuess === true) {
       playerTwo.turnToPick = true;
       playerOne.turnToPick = false;
       playerTwo.score = playerTwo.score + boxScoreValue;
-      playerTwoScoreDisplay.textContent = `Player 2 Score: ${playerTwo.score}`;
+      playerOneScoreDisplay.textContent = `${playerTwo.name}'s score: ${playerTwo.score}`;
       return setTimeout(goBack, 3000);
     }
   }
@@ -215,7 +265,7 @@ function popupQuestion() {
       if (playerOne.score < 0) {
         playerOne.score = 0;
       }
-      playerOneScoreDisplay.textContent = `Player 1 Score: ${playerOne.score}`;
+      playerOneScoreDisplay.textContent = `${playerOne.name}'s score: ${playerOne.score}`;
     } else if (playerTwo.turnToGuess === true) {
       playerTwo.hasGuessed = true;
       playerTwo.turnToGuess = false;
@@ -224,7 +274,7 @@ function popupQuestion() {
       if (playerTwo.score < 0) {
         playerTwo.score = 0;
       }
-      playerTwoScoreDisplay.textContent = `Player 2 Score: ${playerTwo.score}`;
+      playerOneScoreDisplay.textContent = `${playerTwo.name}'s score: ${playerTwo.score}`;
     }
     submitButton.disabled = true;
     passButton.disabled = true;
@@ -327,13 +377,17 @@ selected. Time to advance to the next round!";
 &playerOneTurn=${playerOne.turnToPick}\
 &playerTwoTurn=${playerTwo.turnToPick}\
 &playerOneScore=${playerOne.score}\
-&playerTwoScore=${playerTwo.score}`;
+&playerTwoScore=${playerTwo.score}\
+&playerOneName=${playerOne.name}\
+&playerTwoName=${playerTwo.name}`;
     } else if (roundNumber === 3) {
       document.location = `/final-jeopardy.html?roundNumber=${roundNumber}\
 &playerOneTurn=${playerOne.turnToPick}\
 &playerTwoTurn=${playerTwo.turnToPick}\
 &playerOneScore=${playerOne.score}\
-&playerTwoScore=${playerTwo.score}`;
+&playerTwoScore=${playerTwo.score}\
+&playerOneName=${playerOne.name}\
+&playerTwoName=${playerTwo.name}`;
     }
   }
 }
@@ -344,7 +398,7 @@ function finalJeopardy() {
 
   answerForm.reset();
   finalCategoryTextBox.textContent = `Category: ${lastRoundCategory}`;
-  finalQuestionTextBox.textContent = "Enter the amount of points you would like to bet for the final question";
+  finalQuestionTextBox.textContent = "Enter the amount of points you would like to bet for the final question...";
   answerInput.style.display = "none";
   notification.textContent = "";
   if (playerOne.turnToPick === true) {
@@ -406,13 +460,11 @@ function finalJeopardy() {
         answerForm.removeEventListener("submit", registerAnswer)
         if (playerOne.turnToGuess == true) {
         playerOneAnswer = answerInput.value;
-        console.log(playerOneAnswer);
         playerOne.turnToGuess = false;
         playerTwo.turnToGuess = true;
         return enterFinalAnswer()
       } else if (playerTwo.turnToGuess == true){ 
         playerTwoAnswer = answerInput.value;
-        console.log(playerTwoAnswer);
         return checkFinalAnswers()
       }
     }
