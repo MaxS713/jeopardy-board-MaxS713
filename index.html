@@ -1,3 +1,4 @@
+<!-- Typical head information with CSS link -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,11 +8,13 @@
     <title>Jeopardy</title>
     <link href="styles/index.css" rel="stylesheet" type="text/css" />
   </head>
+  <!-- Typical head information with CSS link -->
 
+  <!--body-->
   <body>
-
+    <!-- Main Content-->
     <main>
-      
+      <!-- Title with letters singled out for animation -->
       <div id="title">
         <div class="title-first-line">WELCOME TO</div>
         <div class="flip">
@@ -25,29 +28,46 @@
           <span style="--i: 7">D</span>
           <span style="--i: 8">Y</span>
           <div class="noFlip">}</div>
-          <div class="num">2<div class="dot">.</div>0</div>
+          <div class="num">
+            2
+            <div class="dot">.</div>
+            0
+          </div>
         </div>
       </div>
-      
-      <img src="images/digitalquestion.png" alt="a digital looking question mark"/>
-      
-      <a href="/round-1.html?roundNumber=0
+      <!-- Title with letters singled out for animation -->
+
+      <!-- Main Image -->
+      <img
+        src="images/digitalquestion.png"
+        alt="a digital looking question mark"
+      />
+      <!-- Main Image -->
+
+      <!-- Link Buton To First Round with some default attributes passed over  -->
+      <a
+        href="/round-1.html?roundNumber=0
 &playerOneTurn=true&playerTwoTurn=false
 &playerOneScore=0&playerTwoScore=0&
-playerOneName=Player%20One&playerTwoName=Player%20Two">
-          <button>PLAY</button>
+playerOneName=Player%20One&playerTwoName=Player%20Two"
+      >
+        <button>PLAY</button>
       </a>
-
+      <!-- Link Buton To First Round with some default attributes passed over  -->
     </main>
+    <!-- Main Content-->
 
+    <!-- Footer with attribution-->
     <footer>
-      Questions within this document are sourced from <a href="https://opentdb.com/">OpenTDB</a> and reformatted for Upright Education. OpenTDB is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a>
+      Questions within this document are sourced from
+      <a href="https://opentdb.com/">OpenTDB</a> and reformatted for Upright
+      Education. OpenTDB is licensed under
+      <a href="https://creativecommons.org/licenses/by-sa/4.0/"
+        >https://creativecommons.org/licenses/by-sa/4.0/</a
+      >
     </footer>
-
-
-
-
-    </footer>
-    
+    <!-- Footer with attribution-->
   </body>
+  <!-- Body-->
 </html>
+<!-- End-->

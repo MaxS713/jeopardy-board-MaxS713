@@ -377,7 +377,7 @@ function goBack() {
   numberOfQuestionsGoneThrough++;
   if (roundNumber === 1) {
     if (
-      numberOfQuestionsGoneThrough === 3 ||
+      numberOfQuestionsGoneThrough === 1 ||
       playerOne.score >= 2500 ||
       playerTwo.score >= 2500
     ) {
@@ -386,7 +386,7 @@ function goBack() {
     }
   } else if (roundNumber === 2) {
     if (
-      numberOfQuestionsGoneThrough === 3 ||
+      numberOfQuestionsGoneThrough === 1 ||
       playerOne.score >= 5000 ||
       playerTwo.score >= 5000
     ) {

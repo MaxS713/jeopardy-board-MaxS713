@@ -1,4 +1,4 @@
-/* Not sure why but height:100% was necessary for me 
+/* Not sure why but height:100% was necessary 
 to be able to use the full length of the page */
 html{
     height: 100%;
@@ -9,14 +9,13 @@ I found that in general a wrapping width of 80% with some auto left-right
 margin, is more comfortable to the eye */
 body{
     background-color: #010B12;
-    font-family: Helvetica; /*Helvetica is a nice neutral font*/
+    font-family: Helvetica;
     max-height: 100%;
     max-width: 80%;
     margin: 0 auto;
 }
 
-/* a flex box with everything centered for the title, image, and play button,
-made my life easier */
+/* a flex box with everything centered for the title, image, and play button*/
 main {
     display: flex;
     flex-direction: column;
@@ -26,14 +25,14 @@ main {
     width: 80%;
     position: absolute;
     line-height: min(max(7vw), 70px); 
-    /*I found that vmax, vh and vw were my best friends for responsiveness!
+    /*I found that vmax, vh and vw were good friends for responsiveness!
     I have them throughout the project.
     But I also noticed things can get disproportionately huge on high resolution screens - 
     I saw online that this min max function is a solution to help clamp the 
     maximum size things can get*/
 }
 
-/*The color of the title*/
+/*Title color*/
 #title{
     color: #d7dadd;
 }
@@ -46,7 +45,7 @@ be a little pushed to the right */
     font-size: min(max(4vw), 40px);
 }
 
-/*And the first letter, bigger - found online that I could do this with this pseudoelement */
+/*And the first letter, bigger - achieved with with this pseudoelement */
 .title-first-line::first-letter {
     font-size: min(max(6vw), 60px);
 }
@@ -69,8 +68,7 @@ of the title to not go to a new line, but be inline...*/
 
 
 /* I am not responsible for this title animation, I found it online.
-I hope I know and understand how to do this soon! I tried to tinker with it a bit though */
-
+I tried to tinker with it a bit though */
 .noFlip{
     display: inline-block;
     font-size: min(max(9vw), 90px);
@@ -102,7 +100,6 @@ img {
     max-height:35vh;
     opacity: 0.8; /*The image blends a little with the background thanks to this*/
 }
-
 
 button{
     color:#d7dadd;
@@ -140,6 +137,7 @@ footer{
     background-color: #1B5176;
 }
 
+/* Different color for the links in the footer */
 footer a{
     color:#5EBDF3;
     text-decoration: none;

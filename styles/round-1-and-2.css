@@ -1,10 +1,11 @@
-
-/*Nothing much different from the index.css - a lot of the same style...*/
-
+/* Not sure why but height:100% was necessary 
+to be able to use the full length of the page */
 html{
     height: 100%;
 }
 
+/*General settings for the whole page,
+Here we use the full width of the page to give plenty of space for the grid*/
 body{
     background-color: #010B12;
     font-family: Helvetica;
@@ -13,6 +14,7 @@ body{
     margin: 0 auto;
 }
 
+/* a flex box with all the content on the page centered on a column axis*/
 main {
     margin: 2vh auto;
     display: flex;
@@ -21,27 +23,24 @@ main {
     align-items: center;
 }
 
-#title{
+/*header style*/
+header{
     text-align: center;
     line-height: 200%;
     margin:3vh auto 0 auto;
-}
-
-.bigger{
-    font-size: min(max(3.5vw), 40px);
     color: #d7dadd;
 }
 
-#player-turn {
+/*"bigger" font for title - current round number*/
+.title{
+    font-size: min(max(3.5vw), 40px);
+}
+
+/*smaller font for subtitle - whose player turn it is*/
+.subtitle {
     margin-top: 2.5vh;
     font-size: min(max(2.3vw), 25px);
-    color: #d7dadd;
-}
-
-.subtitle{
-    margin-top: 1.5vh;
-    font-size: min(max(2vw), 25px);
-    color: #d7dadd;
+    
 }
 
 /*Jeopardy grid, you say? lemme use a grid layout*/
@@ -57,6 +56,7 @@ main {
     font-size: 1.3vmax;
 }
 
+/*Styling for the grid with the category names, slightly different and bigger*/
 .grid-category {
     font-size: 1.2vw;
     background-color: #031524;
@@ -66,17 +66,21 @@ main {
     padding: 1.5vw 1vw;
 }
 
+/*Styling for each grid items*/
 .grid-item {
     outline: 2.5px solid #031524;
     border-radius: 0.5px;
     padding: 0.4em;
 }
 
+/*Styling changes when grid are hovered on*/
 .grid-item:hover {
     background-color: #0a1c2b;
     cursor: pointer;
 }
 
+
+/*Styling changes when grid is "grayed out" after use*/
 .grid-grayout{
     background-color: rgb(35, 28, 43);
     pointer-events: none;
@@ -103,28 +107,17 @@ main {
     color:#1B5176;
 }
 
+/*Margin, font-size and color definition for the display of scores*/
 #player-scores{
     margin: 3vh;
+    font-size: min(max(1.8vw), 18px);
+    color: #d7dadd;
 }
 
+/*Trying to have the two score display separated enough on the page*/
 span{
-    color: #d7dadd;
-    font-size: min(max(1.8vw), 18px);
     margin-left: 13vw;
     margin-right: 13vw;
-}
-
-
-
-
-
-/*Don't think we'll need the link to the next page later, 
-for now it just sits in the top right corner (it was getting in the way of the rest
-on a phone screen when it was in the lower right corner )*/
-#next-page{
-    position: absolute;
-    top:5%;
-    right:5%;
 }
 
 
@@ -136,23 +129,120 @@ and asks the user to rotate his phone - I found that a width<500px should captur
 }
 
 @media screen and (max-width: 500px) {
-    main{
+    main, header{
         display:none; /*If the screen isn't wide enough, 
         everything disapear exept for the prompt to rotate the phone*/
     }
     #rotate-phone { 
         display: block;
         position: absolute;
+        color:#d7dadd;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%); /*Found online that this was a way
         to center something vertically and horizontaly - looks over-complicated for something so simple
         but it works*/
-        text-align: center;
-        color:#d7dadd;
+        text-align: center; 
     }
 }
 
+/*******This is the styling and properties for an overlay that covers the whole screen and shows a popup box
+for each question. This was cleaner than having each grid's text change because of lack of space.
+This wasn't what the instructions called for, but I hope that's ok! - 
+Also, I got plenty of help from google too for this*******/
+
+/*An overlay that covers and "dims" the whole viewport */
+#overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0; /*The overlay covers the whole screen with TBLR properties of 0 and a position: fixed*/
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6); /*A black color with an opacitity setting creates a "dim" effect */
+    transition: opacity 500ms; 
+    display: none; /*Display is set to none. But is changed to appear by javascript when needed*/
+}
+
+/*This is a wrapper for the popup box*/
+#popup {
+    margin: 30vh auto;
+    width: 60%;
+    color:#d7dadd;
+}
+
+/*Styling for the question popup box*/
+#popup-box{
+    background:#031524;
+    outline: 2px solid #1B5176;
+    border-radius: 0.5rem;
+    padding: 1em;
+}
+
+/*Styling for the header text of the popup box*/
+#popup h2 {
+    margin-top: 0;
+    font-size: min(max(2vw), 20px);
+    color: #d7dadd;
+}
+
+/*Styling for the text content of the popup box*/
+#popup-content{
+    font-style: italic;
+    font-size: min(max(1.8vw), 20px);
+    margin-left:5vw;
+}
+
+/*Styling and display properties for the input form*/
+input{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin: 4vh auto 0 auto;
+    padding: 1vh 2vw;
+    font-size: min(max(2vw), 20px);
+}
+
+/*Display properties for the Submit and Pass buttons*/
+#buttons{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Styling for the Submit and Pass buttons*/
+button{
+    color:#d7dadd;
+    background-color: #1B5176;
+    border: none;
+    border-radius: 2px;
+    margin: 2vh 0.4em;
+    font-size: min(max(2vw), 20px);
+    padding: 0.4em 0.8em;
+    letter-spacing: 0.1em;
+}
+
+/*Buttons change color when hovered on*/
+button:hover {
+    color:#010B12;
+    background-color: #5EBDF3;
+}
+
+/*Buttons change color when disabled 
+and pointer doesn't change when disabled button is hovered on*/
+button:disabled {
+    opacity:0.5;
+    pointer-events: none;
+}
+
+/*Style for text that notifies if an answer is correct or not*/
+#answer-correct{
+text-align: center;
+margin: 2vh auto;
+}
+
+/*footer style - I struggled to have it stay at the bottom...
+I found that position absolute with different left, right, bottom attributes
+finally did the trick*/
 footer{
     position: absolute;
     left: 0;
@@ -167,90 +257,3 @@ footer{
     width:40%;
     background-color: #1B5176;
 }
-
-.grid-link{
-    text-decoration: none;
-}
-
-#overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.6);
-    transition: opacity 500ms;
-    display: none;
-}
-
-#popup {
-    margin: 30vh auto;
-    width: 60%;
-    color:#d7dadd;
-}
-
-#popup-box{
-    background:#031524;
-    outline: 2px solid #1B5176;
-    border-radius: 0.5rem;
-    padding: 1em;
-}
-
-#popup h2 {
-    margin-top: 0;
-    font-size: min(max(2vw), 20px);
-    color: #d7dadd;
-}
-
-#popup #popup-content {
-    min-height: 30%;
-    overflow: auto;
-}
-
-#popup-content{
-    font-style: italic;
-    font-size: min(max(1.8vw), 20px);
-    margin-left:5vw;
-}
-
-input{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    margin: 4vh auto 0 auto;
-    padding: 1vh 2vw;
-    font-size: min(max(2vw), 20px);
-}
-
-#buttons{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-}
-
-button{
-    color:#d7dadd;
-    background-color: #1B5176;
-    border: none;
-    border-radius: 2px;
-    margin: 2vh 0.4em;
-    font-size: min(max(2vw), 20px);
-    padding: 0.4em 0.8em;
-    letter-spacing: 0.1em;
-}
-
-button:hover {
-    color:#010B12;
-    background-color: #5EBDF3;
-}
-
-button:disabled {
-    opacity:0.5;
-    pointer-events: none;
-}
-
-#answer-correct{
-text-align: center;
-margin: 2vh auto;
-}
-

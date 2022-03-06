@@ -1,3 +1,4 @@
+<!-- Typical head information with CSS link -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,50 +8,70 @@
     <title>Jeopardy</title>
     <link href="styles/final-jeopardy.css" rel="stylesheet" type="text/css" />
   </head>
+  <!-- Typical head information with CSS link -->
 
+  <
+  <!--body-->
   <body>
-    <main>
-      
-    <div id="title">
-      <div class="bigger">FINAL ROUND</div>
-    </div>
+    <!-- Header -->
+    <header>
+      <div id="title">FINAL ROUND</div> <!-- Displays round number -->
 
-    
-    <div id="player-turn"></div>
-    <div id="score-to-bet"></div>
-
-    <div id="final-category"></div>
-
-    <div id="final-question"></div>
-    
-    <form id="answer-form">
-    <input id="bet-input" type="text" autocomplete="off" placeholder="Point bet amount..." />
-    <input id="answer-input" type="text" autocomplete="off" placeholder="Final anwer..." />
-      <div id="bet-button-area">
-    <button id="bet-button" type="submit">BET</button>
+      <div id="subtitle">
+        <div id="player-turn"></div> <!-- Displays whose turn it is -->
+        <div id="score-to-bet"></div> <!-- Displays score available to bet -->
       </div>
-    </form> 
-    <h2 id="notification" class = "notification"></h2>
-    <h2 id="notification-two" class = "notification"></h2>
+    </header>
+    <!-- Header -->
 
-    <div id="overlay">
-      <div id="popup">
-        <div id="popup-box">
-          <h2 id="popup-header"></h2>
-          <div id="popup-content"></div>
+    <!-- Main -->
+    <main>
+      <div id="final-category"></div> <!-- Displays final category name -->
+
+      <div id="final-question"></div> <!-- Display for directions + final question name -->
+
+      <!-- Bet + Answer Input Form-->
+      <form id="answer-form">
+        <input id="bet-input" type="text" autocomplete="off" placeholder="Point bet amount..."/>
+        <input id="answer-input" type="text" autocomplete="off" placeholder="Final anwer..."/>
+        <div id="bet-button-area">
+          <button id="bet-button" type="submit">BET</button>
         </div>
-        <div id="buttons">
-          <button id="submit-button" type="submit">Guess</button>
+      </form>
+
+      <h2 id="notification" class="notification"></h2> <!-- Notification area for information & errors-->
+      <h2 id="notification-two" class="notification"></h2> <!-- Second Notification area-->
+      <!-- Bet + Answer Input Form-->
+
+      <!-- PopUp overlay for final message-->
+      <div id="overlay">
+        <div id="popup">
+          <div id="popup-box">
+            <h2 id="popup-header"></h2>
+            <div id="popup-content"></div>
+          </div>
+          <div id="buttons">
+            <button id="submit-button" type="submit"></button>
+          </div>
         </div>
+      </div>
+      <!-- PopUp overlay for final message-->
+
+    </main>
+    <!-- Main Content-->
+
+    <!-- Alert if screen size is too small-->
+    <div id="rotate-phone">
+      <p>Please zoom out or rotate your phone to landscape mode</p>
     </div>
-  </div>
-  </main>
+    <!-- Alert if screen size is too small-->
 
-  <div id="rotate-phone"><p>Please zoom out or rotate your phone to landscape mode</p></div>
+    <!-- Footer-->
+    <footer>Jeopardy project - BCA SDB - Feb 2022</footer>
+    <!-- Footer-->
 
-  <footer>Jeopardy project - BCA SDB - Feb 2022</footer>
-
-  <script src="scripts/index.js"></script>
-
+    <!-- Link to JS script -->
+    <script src="scripts/index.js"></script>
+    <!-- Link to JS script -->
   </body>
 </html>
