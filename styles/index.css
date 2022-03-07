@@ -1,3 +1,8 @@
+/***** TO DO *******/
+/*-Still some optimization needed for responsiveness
+/*-More styling for user friendliness */
+
+
 /* Not sure why but height:100% was necessary 
 to be able to use the full length of the page */
 html{
@@ -35,34 +40,33 @@ main {
 /*Title color*/
 #title{
     color: #d7dadd;
+    margin-top: 2vh;
 }
 
 /* I wanted the first line of the title to
 be a little pushed to the right */
 .title-first-line{
-    margin-left: min(max(5vw), 50px);
+    margin-left: min(max(4vw), 40px);
     word-spacing: 0.5vw;
-    font-size: min(max(4vw), 40px);
+    font-size: min(max(3vw), 30px);
 }
 
 /*And the first letter, bigger - achieved with with this pseudoelement */
 .title-first-line::first-letter {
-    font-size: min(max(6vw), 60px);
+    font-size: min(max(5vw), 50px);
 }
 
 /*I needed the numbers to be slightly smaller and slightly pushed to the right*/
 /*Also I needed all the diferent section
 of the title to not go to a new line, but be inline...*/
 .num{
-    display: inline-block;
-    font-size: min(max(5vw), 50px);
+    font-size: min(max(4vw), 40px);
     margin-left: 0.5vmax; 
 }
 
 /*The dot of 2.0 is a different color and bigger*/
 .dot{
-    display: inline-block;
-    font-size: min(max(8vmax), 80px);
+    font-size: min(max(8vw), 80px);
     color: #1B5176;
 }
 
@@ -70,12 +74,10 @@ of the title to not go to a new line, but be inline...*/
 /* I am not responsible for this title animation, I found it online.
 I tried to tinker with it a bit though */
 .noFlip{
-    display: inline-block;
     font-size: min(max(9vw), 90px);
 }
 
-.flip span {
-    display: inline-block;
+.flip{
     font-size: min(max(6vw), 60px);
     color: #d7dadd;
     animation: flip 12s infinite;
@@ -96,8 +98,8 @@ I tried to tinker with it a bit though */
 /*We want the image to be an aceptable size*/
 img {
     margin-top: 4vh;
-    max-width:55vw;
-    max-height:35vh;
+    max-width:60vw;
+    max-height:30vh;
     opacity: 0.8; /*The image blends a little with the background thanks to this*/
 }
 
@@ -106,9 +108,9 @@ button{
     background-color: #1B5176;
     border: none;
     border-radius: 2px;
-    margin-top: 3vh; /*I've been using margin-top a lot to separate elements and for them to not be 
+    margin-top: 0.1vh; /*I've been using margin-top a lot to separate elements and for them to not be 
     glued to each other, I reckon a better way would be to use the flexbox with height? I'll work on that */
-    font-size: min(max(2vmax), 20px);
+    font-size: min(max(1vw), 20px);
     font-weight: 550;
     padding: 0.4em 0.8em;
     letter-spacing: 0.1em;
