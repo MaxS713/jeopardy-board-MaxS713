@@ -110,7 +110,7 @@ button{
     border-radius: 2px;
     margin-top: 0.1vh; /*I've been using margin-top a lot to separate elements and for them to not be 
     glued to each other, I reckon a better way would be to use the flexbox with height? I'll work on that */
-    font-size: min(max(1vw), 20px);
+    font-size: min(max(2vw), 20px);
     font-weight: 550;
     padding: 0.4em 0.8em;
     letter-spacing: 0.1em;
