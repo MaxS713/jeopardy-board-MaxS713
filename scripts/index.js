@@ -1,8 +1,9 @@
 /*******Thanks for reviewing my code - the project should be relatively functional
 But these are things that still need some work and that I didn't have time to do yet:
 
-- Rewrite the function that fetch questions so that it can work regardless of the order they come in
-in the JSON file. 
+- Need to work on pulling the accurate data for each round to avoid repeats
+
+- Need a loading screen, because questions take some time to be fetched and sorted through
 
 - The way some answers are checked can be quite unfair - ex: Sea horse instead of Seahorse, 
 sputnik instead of Sputnik 1, washington, instead of George Washington - etc...
@@ -17,10 +18,7 @@ of the score for the round only, not total.
 
 -In general the CSS and html can still be improved for a better user experience,
 and responsiveness is not quite optimized yet.
-
--Maybe down the line, I can explore grabbing random questions directly from an open source web api.
 */
-
 
 //Defining all the DOM elements I will need to manipulate throughout the script
 let whichPlayerTurn = document.getElementById("player-turn");
@@ -44,9 +42,11 @@ let notification2 = document.getElementById("notification-two");
 let scoreAvailableToBet = document.getElementById("score-to-bet");
 
 //Defining other variables that will be manipulated throughout the script
-let categoriesArray = [];
-let firstRoundquestionsList = [];
-let secondRoundquestionsList = [];
+let firstRoundCategories = [];
+let secondRoundCategories = [];
+let finalRoundCategory;
+let firstRoundQuestionsList = [];
+let secondRoundQuestionsList = [];
 let lastRoundQuestion;
 let firstRoundAnswersArray = [];
 let secondRoundAnswersArray = [];
@@ -61,6 +61,7 @@ let boxScoreValue;
 let currentAnswer;
 let dailyDoubleBoxID1;
 let dailyDoubleBoxID2;
+let fetchDataLoop = 1;
 
 //Creating the players as objects with different attributes
 let playerOne = {
@@ -113,7 +114,6 @@ if (roundNumber === 0) {
 
 //Pop up introduction to the game
 function intro() {
-
   //series of DOM reasignement for the popup box to look as needed
   popUpBox.style.display = "block";
   passButton.style.display = "none";
@@ -121,8 +121,8 @@ function intro() {
   answerInput.placeholder = "Player One's name";
   whichPlayerTurn.textContent = "";
   playerOneScoreDisplay.textContent = "";
-  playerTwoScoreDisplay.textContent = ""; 
-  
+  playerTwoScoreDisplay.textContent = "";
+
   //text content that introduces the game
   popUpHeader.textContent = "Welcome to Jeopardy 2.0!";
   popUpContent.textContent =
@@ -131,37 +131,36 @@ function intro() {
   //When the player clicks the "OK" button, the function to gather the player's name starts
   submitButton.textContent = "Ok"; //
   submitButton.disabled = false;
-  answerForm.addEventListener("click", playerNamesInput); 
+  answerForm.addEventListener("click", playerNamesInput);
 
-
-//function to asks for the players' names
+  //function to asks for the players' names
   function playerNamesInput(event) {
     event.preventDefault();
-    answerForm.removeEventListener("click", playerNamesInput); 
-/*This is just for safety, I found that if I don't remove the event listeners 
+    answerForm.removeEventListener("click", playerNamesInput);
+    /*This is just for safety, I found that if I don't remove the event listeners 
 when they're not needed anymore, sometimes they can be triggered at an unwanted moment later on...*/
 
-//The form resets and the input box appears and asks for the players' names, one at a time
+    //The form resets and the input box appears and asks for the players' names, one at a time
     answerForm.reset();
     popUpContent.textContent = "First, let's get your names...";
     answerInput.style.display = "block";
     answerInput.placeholder = "Player One's name";
-    
-/*This little useful piece of code, makes it that the submit button is only clickable 
+
+    /*This little useful piece of code, makes it that the submit button is only clickable 
 if a value is being entered, avoiding empty strings to be submitted - I have it for most input situations*/
     submitButton.disabled = true;
     answerInput.addEventListener("input", (event) => {
-      if (event.target.value.trim()) {//if there's a value the button is enabled and vice versa
+      if (event.target.value.trim()) {
+        //if there's a value the button is enabled and vice versa
         submitButton.disabled = false;
       } else {
         submitButton.disabled = true;
       }
     });
 
-    answerForm.addEventListener("submit", submitName); 
+    answerForm.addEventListener("submit", submitName);
     //On submission, the function to register the names is triggered
   }
-
 
   //Function to register the players' names
   function submitName(event) {
@@ -170,13 +169,11 @@ if a value is being entered, avoiding empty strings to be submitted - I have it 
 
     //If the name is still the default - the submission value is assigned to the player's name
     if (playerOne.name === "Player One") {
-      console.log(answerInput.value);
       playerOne.name = answerInput.value;
       answerForm.reset();
       answerInput.placeholder = "Player Two's name";
       answerForm.addEventListener("submit", submitName); //Then a second submission is expected for the second player
     } else if (playerTwo.name === "Player Two") {
-      console.log(answerInput.value);
       playerTwo.name = answerInput.value;
 
       //Once both player names have been registered, then the pages refreshes with the new information
@@ -192,87 +189,179 @@ if a value is being entered, avoiding empty strings to be submitted - I have it 
   }
 }
 
-//This function fetches the data from the json file
-//and stores the information in a variable
-async function getData() {
-  let questions = await fetch("json-file/placeholder-questions.json");
-  let questionsJSON = await questions.json();
-  let questionsList = questionsJSON.placeholderQuestions;
+let listOfCategoriesAvailable = [
+  "Art & Literature",
+  "Language",
+  "Science & Nature",
+  "General",
+  "Food & Drink",
+  "People & Places",
+  "Geography",
+  "History & Holidays",
+  "Entertainment",
+  "Toys & Games",
+  "Music",
+  "Mathematics",
+  "Religion & Mythology",
+  "Sports & Leisure",
+];
 
-//This function sorts through each question
-//and if it finds a category it has not encountered before,
-//it pushes it in an array and that will be our lists of categories
-  function findCategoriesName() {
-    for (let questions of questionsList) {
-      if (categoriesArray.includes(questions.category) === false) {
-        categoriesArray.push(questions.category);
-      }
-    }
-
-//this takes the list of category boxes html elements in the DOM
-//and converts it into an array
-    let gridCategoryBoxesArray = [...gridCategoryBoxes]; 
-
-//then this goes through the array of category boxes and for each one,
-//it adds the name of the category as the text content
-    gridCategoryBoxesArray.forEach((index, index2) => {
-      index.textContent = categoriesArray[index2];
-    });
+function shuffleCategories() {
+  for (var i = listOfCategoriesAvailable.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = listOfCategoriesAvailable[i];
+    listOfCategoriesAvailable[i] = listOfCategoriesAvailable[j];
+    listOfCategoriesAvailable[j] = temp;
   }
-//the function to sort the categories is called
-  findCategoriesName();
 
+  for (let i = 0; i < 13; i++) {
+    if (i <= 5) {
+      firstRoundCategories.push(listOfCategoriesAvailable[i]);
+    } else if (i <= 11) {
 
-//this will go through each question and sort them in three categories
-//the list for the first round, the list for the second round 
-//and the final question
-
-/****Important Note here:***** To make it easier, I changed the order of the questions 
- * directly in the JSON file, so that they would come one by one in the same order as the grid
- * I understand it's not ideal - ideally, I would have a function that can sort through 
- * any questions in whatever order - this was just to make sure it worked as I was starting the project
- * and I didn't have time to rewrite it.
- * I can try to write a better function, but it'll take more calculations */
-
-  function sortQuestions() {
-    for (let i = 0; i < questionsList.length; i++) {
-      if (i === 60) { //the 61st question  of the list (index 60) is for the final round
-        lastRoundQuestion = questionsList[i].question;
-        lastRoundAnswer = questionsList[i].answer;
-        lastRoundCategory = questionsList[i].category;
-      } else if (i > 29) { // the next 30 (30 to 59) are for the second round
-        secondRoundquestionsList.push(questionsList[i].question);
-        secondRoundAnswersArray.push(questionsList[i].answer);
-      } else if (i <= 29) { // the first 30 (0 to 29)  are for the first round
-        firstRoundquestionsList.push(questionsList[i].question);
-        firstRoundAnswersArray.push(questionsList[i].answer);
-      }
+      secondRoundCategories.push(listOfCategoriesAvailable[i]);
+    } else if (i === 12) {
+      finalRoundCategory = listOfCategoriesAvailable[i];
     }
-  }
-  //function to sort the questions is called
-  sortQuestions();
-
-  /*before getting through any further lines of code
-  and the start of round 1 and 2
-  this checks if we're on the final round, and sends you there now
-  because its code functions differently*/
-  if (roundNumber === 3) {
-    return finalJeopardy();
   }
 }
-//this whole function to gather and sort through data is called
+
+shuffleCategories();
+
+
+
+
+//This coming function fetches data from "Ninja API"
+//for each category and each round a pull is made
+//the information is pushed and stored in those three variables
+
+let questionsData;
+let firstRoundQuestionsDataList = [];
+let secondRoundQuestionsDataList = [];
+
+async function getData() {
+  for (let i = 0; i < 6; i++) {
+    questionsData = await fetch(
+      `https://api.api-ninjas.com/v1/trivia?limit=6&category=${firstRoundCategories[i].replace(/\s/g, "").replace(/&/g, "")}`,
+      {
+        headers: {
+          "X-Api-Key": "g8LJ+K3KglfVpikhIrcj6g==jxQuuDW1BtSDW25L",
+        },
+      }
+    );
+    questionsData = await questionsData.json();
+    firstRoundQuestionsDataList.push(questionsData);
+  }
+
+  for (let i = 0; i < 6; i++) {
+    questionsData = await fetch(
+      `https://api.api-ninjas.com/v1/trivia?limit=6&category=${secondRoundCategories[i].replace(/\s/g, "").replace(/&/g, "")}`,
+      {
+        headers: {
+          "X-Api-Key": "g8LJ+K3KglfVpikhIrcj6g==jxQuuDW1BtSDW25L",
+        },
+      }
+    );
+    questionsData = await questionsData.json();
+    secondRoundQuestionsDataList.push(questionsData);
+  }
+
+  questionsData = await fetch(`https://api.api-ninjas.com/v1/trivia?limit=1&category=${finalRoundCategory.replace(/\s/g, "").replace(/&/g, "")}`,
+    {
+      headers: {
+        "X-Api-Key": "g8LJ+K3KglfVpikhIrcj6g==jxQuuDW1BtSDW25L",
+      },
+    }
+  );
+  lastRoundQuestion = await questionsData.json();
+
+//reorganizes the fetched data into a list 
+//where the questions are in order of apearance of the grid
+  let questionsList = [];
+  let j = 0;
+  let k = 0;
+
+  i = 0;
+  for (let i = 0; i < 30; i++) {
+    questionsList.push(firstRoundQuestionsDataList[j][k]);
+    j++;
+    if (j === 6) {
+      j = 0;
+      k++;
+    }
+  }
+
+  j = 0;
+  k = 0;
+  for (let i = 0; i < 30; i++) {
+    questionsList.push(secondRoundQuestionsDataList[j][k]);
+    j++;
+    if (j === 6) {
+      j = 0;
+      k++;
+    }
+  }
+
+  questionsList.push(lastRoundQuestion[0]);
+
+console.log(questionsList)
+//sorts through the question list and distributes them 
+//into separate lists for each round
+  for (let i = 0; i < questionsList.length; i++) {
+    if (i === 60) {
+      //the 61st question  of the list (index 60) is for the final round
+      lastRoundQuestion = questionsList[i].question;
+      lastRoundAnswer = questionsList[i].answer;
+      lastRoundCategory = questionsList[i].category;
+    } else if (i > 29) {
+      // the next 30 (30 to 59) are for the second round
+      secondRoundQuestionsList.push(questionsList[i].question);
+      secondRoundAnswersArray.push(questionsList[i].answer);
+    } else if (i <= 29) {
+      // the first 30 (0 to 29)  are for the first round
+      firstRoundQuestionsList.push(questionsList[i].question);
+      firstRoundAnswersArray.push(questionsList[i].answer);
+    }
+  }
+}
+
+//the whole function to fetch and sort the questions is called
 getData();
 
 
+//this takes the list of category boxes html elements in the DOM
+//and converts it into an array
+let gridCategoryBoxesArray = [...gridCategoryBoxes];
+
+//then this goes through the array of category boxes and for each one,
+//it adds the name of the category as the text content
+if (roundNumber === 1) {
+  gridCategoryBoxesArray.forEach((index, index2) => {
+    index.textContent = firstRoundCategories[index2];
+  });
+} else if (roundNumber === 2) {
+  gridCategoryBoxesArray.forEach((index, index2) => {
+    index.textContent = secondRoundCategories[index2];
+  });
+}
+
+/*before getting through any further lines of code
+  and the start of round 1 and 2
+  this checks if we're on the final round, and sends you there now
+  because its code functions differently*/
+if (roundNumber === 3) {
+  finalJeopardy();
+}
+
 //some preliminary code before the answering of questions
 
-//while we here, we will create two random number between 
+//while we here, we will create two random number between
 //0 and 29 to be our daily double grid IDs
 function assignDailyDouble() {
   dailyDoubleBoxID1 = Math.floor(Math.random() * 30);
   dailyDoubleBoxID2 = Math.floor(Math.random() * 30);
-  while (dailyDoubleBoxID1 === dailyDoubleBoxID2) { 
-//for the rare instance that the two random numbers are the same, the second one is rolled again
+  while (dailyDoubleBoxID1 === dailyDoubleBoxID2) {
+    //for the rare instance that the two random numbers are the same, the second one is rolled again
     dailyDoubleBoxID2 = Math.floor(Math.random() * 30);
   }
 }
@@ -301,21 +390,19 @@ gridBoxesArray.forEach((box) => {
   box.addEventListener("click", askQuestion);
 });
 
-
 //the question prompt triggered by each event listener
 function askQuestion() {
-
-//we need to know, which box has been clicked so we can know which question to ask
+  //we need to know, which box has been clicked so we can know which question to ask
   currentBox = this;
-  questionID = gridBoxesArray.indexOf(this); 
+  questionID = gridBoxesArray.indexOf(this);
   boxScoreValue = parseInt(this.textContent); //+this registers the number of points the question is worth
-// by looking at the number content already there
+  // by looking at the number content already there
 
-// this quickly checks if we're dealing with a daily double
+  // this quickly checks if we're dealing with a daily double
   if (questionID === dailyDoubleBoxID1 || questionID === dailyDoubleBoxID2) {
-    dailyDoubleAlert(); //if we are, the user is alerted 
+    dailyDoubleAlert(); //if we are, the user is alerted
   } else {
-    displayQuestion(); //if not, basic display of the question is trigerred 
+    displayQuestion(); //if not, basic display of the question is trigerred
   }
 }
 
@@ -333,19 +420,19 @@ function dailyDoubleAlert() {
   }, 3000); //then after a timeout the question is displayed
 }
 
-//this displays the question 
+//this displays the question
 function displayQuestion() {
   correctAnswerPrompt.textContent = ""; //making sure the notification of a correct answer is empty
   popUpBox.style.display = "block"; // the popup appears
 
   playerOne.hasGuessed = false;
-  playerTwo.hasGuessed = false; 
-//reseting these values that check if a player has already guessed during callbacks
+  playerTwo.hasGuessed = false;
+  //reseting these values that check if a player has already guessed during callbacks
 
-//depending on whose turn it is, displays the name in the header
+  //depending on whose turn it is, displays the name in the header
   if (playerOne.turnToPick === true) {
-    playerOne.turnToGuess = true; //these values are a little redundant but there are there  
-    playerTwo.turnToGuess = false;//to keep track of who's guessing!
+    playerOne.turnToGuess = true; //these values are a little redundant but there are there
+    playerTwo.turnToGuess = false; //to keep track of who's guessing!
     popUpHeader.textContent = `${playerOne.name}, here's your question:`;
   } else if (playerTwo.turnToPick === true) {
     playerTwo.turnToGuess = true;
@@ -356,10 +443,10 @@ function displayQuestion() {
   //depending on which round we're in - gets the question and answers
   //from the questions arrays defined earlier, thanks to the box ID also defined earlier
   if (roundNumber === 1) {
-    popUpContent.textContent = firstRoundquestionsList[questionID];
+    popUpContent.textContent = firstRoundQuestionsList[questionID];
     currentAnswer = firstRoundAnswersArray[questionID];
   } else if (roundNumber === 2) {
-    popUpContent.textContent = secondRoundquestionsList[questionID];
+    popUpContent.textContent = secondRoundQuestionsList[questionID];
     currentAnswer = secondRoundAnswersArray[questionID];
   }
 
@@ -387,11 +474,16 @@ function checkAnswer(event) {
 
   let answerEntered = answerInput.value; //this gets the value entered from the form
 
-  //both the correct answer and the user's answer are "sanitized" - extra spaces are removed and 
+  //both the correct answer and the user's answer are "sanitized" - extra spaces are removed and
   //all punctuation marks are also removed...
   // ====> found this beautiful length of punctuation marks online that captures them all!
-  let saniAnswerEntered = answerEntered.toLowerCase().trim().replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, ""); 
-  let sanitizedAnswer = currentAnswer.toLowerCase().replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "");
+  let saniAnswerEntered = answerEntered
+    .toLowerCase()
+    .trim()
+    .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "");
+  let sanitizedAnswer = currentAnswer
+    .toLowerCase()
+    .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "");
 
   //then the answers are compared and we are sent to different function depending on a valid answer or no
   if (saniAnswerEntered.includes(sanitizedAnswer)) {
@@ -402,7 +494,7 @@ function checkAnswer(event) {
 }
 
 //in case of a valid answer, the user is notified
-//the value of the box is added to to the score of the person who guessed, 
+//the value of the box is added to to the score of the person who guessed,
 //and after a timeout we are sent back to the grid
 function correctAnswer() {
   correctAnswerPrompt.textContent = "Correct!";
@@ -432,19 +524,13 @@ function incorrectAnswer() {
     playerOne.turnToGuess = false;
     playerTwo.turnToGuess = true;
     playerOne.score = playerOne.score - boxScoreValue;
-    if (playerOne.score < 0) { 
-      //if the score deduction creates a negative number, the score stays at 0 - if not, that'd be too harsh!
-      playerOne.score = 0;
-    }
+
     playerOneScoreDisplay.textContent = `${playerOne.name}'s score: ${playerOne.score}`;
   } else if (playerTwo.turnToGuess === true) {
     playerTwo.hasGuessed = true;
     playerTwo.turnToGuess = false;
     playerOne.turnToGuess = true;
     playerTwo.score = playerTwo.score - boxScoreValue;
-    if (playerTwo.score < 0) {
-      playerTwo.score = 0;
-    }
     playerTwoScoreDisplay.textContent = `${playerTwo.name}'s score: ${playerTwo.score}`;
   }
   submitButton.disabled = true;
@@ -472,7 +558,7 @@ function pass(event) {
   }
 }
 
-//this function simply resets the form and asks the other player if 
+//this function simply resets the form and asks the other player if
 //he has the answer, in case the other player passed, or gave an incorrect answer
 function askOtherPlayer() {
   answerForm.reset();
@@ -505,7 +591,7 @@ function goBack() {
   //we advance to the next round
   if (roundNumber === 1) {
     if (
-      numberOfQuestionsGoneThrough === 30 || 
+      numberOfQuestionsGoneThrough === 1 ||
       playerOne.score >= 2500 ||
       playerTwo.score >= 2500
     ) {
@@ -514,7 +600,7 @@ function goBack() {
     }
   } else if (roundNumber === 2) {
     if (
-      numberOfQuestionsGoneThrough === 30 ||
+      numberOfQuestionsGoneThrough === 1 ||
       playerOne.score >= 5000 ||
       playerTwo.score >= 5000
     ) {
@@ -522,7 +608,7 @@ function goBack() {
     }
   }
 
-  //this make the popup box disapear 
+  //this make the popup box disapear
   answerForm.removeEventListener("submit", checkAnswer);
   passButton.removeEventListener("click", pass);
   popUpBox.style.display = "none";
@@ -532,7 +618,7 @@ function goBack() {
   currentBox.removeEventListener("click", askQuestion);
   currentBox.classList.add("grid-grayout");
 
-//depending on whose turn it is to pick, the player is notified and they can pick again...
+  //depending on whose turn it is to pick, the player is notified and they can pick again...
   if (playerOne.turnToPick === true) {
     whichPlayerTurn.textContent = `${playerOne.name}, pick a question...`;
   } else if (playerTwo.turnToPick === true) {
@@ -556,7 +642,7 @@ selected. Time to advance to the next round!";
   submitButton.disabled = false;
   submitButton.addEventListener("click", gotoNextRound);
 
-  //after the notification is dismissed 
+  //after the notification is dismissed
   //the popup disapears and an url to the next round is generated
   //with some parameters to pass through - players name, score, etc...
   function gotoNextRound() {
@@ -587,11 +673,10 @@ selected. Time to advance to the next round!";
 }
 
 //this was it for the first and second round,
-//this function is for the functionality of the final round 
-//which is a litte different 
+//this function is for the functionality of the final round
+//which is a litte different
 function finalJeopardy() {
-
-  let playerOneAnswer; // we will store the answers of both players in these variables. 
+  let playerOneAnswer; // we will store the answers of both players in these variables.
   let playerTwoAnswer;
 
   //first the players are asked how much they want to bet
@@ -603,7 +688,7 @@ function finalJeopardy() {
   notification.textContent = "";
   if (playerOne.turnToPick === true) {
     whichPlayerTurn.textContent = `${playerOne.name}, your turn to bet...`;
-    scoreAvailableToBet.textContent = `You have ${playerOne.score} points.`; 
+    scoreAvailableToBet.textContent = `You have ${playerOne.score} points.`;
     //the players are told how many points they have available to wager
   } else if (playerTwo.turnToPick === true) {
     whichPlayerTurn.textContent = `${playerTwo.name}, your turn to bet...`;
@@ -630,7 +715,7 @@ function finalJeopardy() {
     }
     if (playerOne.turnToPick === true) {
       if (betInput.value > playerOne.score) {
-        notification.textContent = "You can't bet more points than you have..."; 
+        notification.textContent = "You can't bet more points than you have...";
         //error message in case more than available to bet has been entered
         return setTimeout(finalJeopardy, 2000);
       } else {
@@ -653,7 +738,7 @@ function finalJeopardy() {
     }
   }
 
-//this allows the players to input their answers to the final questions
+  //this allows the players to input their answers to the final questions
   function enterFinalAnswer() {
     scoreAvailableToBet.style.display = "none";
     finalQuestionTextBox.textContent = lastRoundQuestion;
@@ -675,7 +760,7 @@ function finalJeopardy() {
       whichPlayerTurn.textContent = `Here's the question: ${playerTwo.name}, your turn to answer...`;
     }
 
-//this function stores each answer given for each player
+    //this function stores each answer given for each player
     function registerAnswer(event) {
       event.preventDefault();
       answerForm.removeEventListener("submit", registerAnswer);
@@ -693,11 +778,18 @@ function finalJeopardy() {
 
   //this function checks if the given answers are correct
   function checkFinalAnswers() {
-
     //each answers given are sanitized
-    let playerOneSaniAnswer = playerOneAnswer.toLowerCase().trim().replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "");
-    let playerTwoSaniAnswer = playerTwoAnswer.toLowerCase().trim().replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "");
-    let sanitizedAnswer = lastRoundAnswer.toLowerCase().replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "");
+    let playerOneSaniAnswer = playerOneAnswer
+      .toLowerCase()
+      .trim()
+      .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "");
+    let playerTwoSaniAnswer = playerTwoAnswer
+      .toLowerCase()
+      .trim()
+      .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "");
+    let sanitizedAnswer = lastRoundAnswer
+      .toLowerCase()
+      .replace(/['!"#$%&\\'()\*+,\-\.\/:;<=>?@\[\\\]\^_`{|}~']/g, "");
 
     //the answer is compared to the correct answer
     if (playerOneSaniAnswer.includes(sanitizedAnswer)) {
@@ -705,12 +797,13 @@ function finalJeopardy() {
       notification.textContent = `${playerOne.name}, your answer was correct! \
 Your score is now: ${playerOne.score}`;
     } else {
-      playerOne.score = playerOne.score - playerOneBet; 
+      playerOne.score = playerOne.score - playerOneBet;
       //the amount of the bet is removed from the score if the answer is incorrect
       notification.textContent = `${playerOne.name}, your answer was incorrect... \ 
 Your score is now: ${playerOne.score}`;
     }
-    if (playerTwoSaniAnswer.includes(sanitizedAnswer)) { //same for the second player
+    if (playerTwoSaniAnswer.includes(sanitizedAnswer)) {
+      //same for the second player
       playerTwo.score = playerTwo.score + playerTwoBet;
       notification2.textContent = `${playerTwo.name}, your answer was correct! \
 Your score is now: ${playerTwo.score}`;
@@ -722,7 +815,7 @@ Your score is now: ${playerTwo.score}`;
     setTimeout(finalPopUp, 4000);
   }
 
-//this final popup debriefs the game, compares the scores and displays who won
+  //this final popup debriefs the game, compares the scores and displays who won
   function finalPopUp() {
     popUpBox.style.display = "block";
     answerInput.style.display = "none";
@@ -734,7 +827,7 @@ Click Ok to go back to the home page.`;
     } else if (playerTwo.score > playerOne.score) {
       popUpContent.textContent = `${playerTwo.name}, you won with a score of ${playerTwo.score}. \
 Click Ok to go back to the home page.`;
-    } else if (playerTwo.score === playerOne.score) { 
+    } else if (playerTwo.score === playerOne.score) {
       //the rare eventuality of both players having the same score is also possible
       popUpContent.textContent = `You both won with an equal score of ${playerOne.score}. \
 You are both equally worthy! Click Ok to go back to the home page.`;

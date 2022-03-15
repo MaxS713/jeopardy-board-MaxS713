@@ -149,7 +149,7 @@ input{
 }
 
 /*layout properties for the buttons*/
-.buttons{
+#bet-button-area{
     display:flex;
     justify-content: center;
     align-items: center;
