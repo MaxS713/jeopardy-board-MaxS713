@@ -3,3 +3,5 @@
 A trivia game based on the famous TV show Jeopardy. This showcases HTML, CSS and JS working together!
 
 Made in February 2022, during the software develpoment bootcamp of Uprgight Education - Burlington Code Academy.
+
+Try it out [here](https://htmlpreview.github.io/?https://github.com/MaxS713/jeopardy-board-MaxS713/blob/master/index.html)!
