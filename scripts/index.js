@@ -1,10 +1,6 @@
 /*******Thanks for reviewing my code - the project should be relatively functional
 But these are things that still need some work and that I didn't have time to do yet:
 
-- Need to work on pulling the accurate data for each round to avoid repeats
-
-- Need a loading screen, because questions take some time to be fetched and sorted through
-
 - The way some answers are checked can be quite unfair - ex: Sea horse instead of Seahorse, 
 sputnik instead of Sputnik 1, washington, instead of George Washington - etc...
 Need to write a better function that would be more forgiving in those cases. 
@@ -17,7 +13,7 @@ came in with 2500 points could get there easily. Perhaps I should put in a varia
 of the score for the round only, not total.
 
 -In general the CSS and html can still be improved for a better user experience,
-and responsiveness is not quite optimized yet.
+and responsiveness is not quite optimized yet. Plenty of code refractoring could be done as well.
 */
 
 //Defining all the DOM elements I will need to manipulate throughout the script
@@ -62,6 +58,7 @@ let currentAnswer;
 let dailyDoubleBoxID1;
 let dailyDoubleBoxID2;
 let fetchDataLoop = 1;
+let categoriesAlreadyUsed = [];
 
 //Creating the players as objects with different attributes
 let playerOne = {
@@ -86,12 +83,14 @@ I have whose turn it is to pick a question and whose turn it is to enter an answ
 different values because I had trouble getting around  
 the fact that both players could get a question wrong or pass  
 but then it would still be the first player's turn to pick a question 
-while it was player's two's turn last to guess. I was getting lost in lots of if and elses statements
+while it was player's two's turn last to guess. 
+I was getting lost in lots of if and elses statements
 and this made my life easier.
 ****/
 
 //Fetching information and parameters passed over in the URL
-//The player's name, score, whose turn it is and which round we're in
+//The player's name, score, whose turn it is, which round we're in
+//and which categories have already been used
 let params = new URLSearchParams(document.location.search);
 let roundNumber = parseInt(params.get("roundNumber"));
 playerOne.name = params.get("playerOneName");
@@ -105,8 +104,12 @@ if (params.get("playerOneTurn") === "true") {
   playerTwo.turnToPick = true;
   playerOne.turnToPick = false;
 }
+if (params.get("categoriesAlreadyUsed") !== null) {
+  categoriesAlreadyUsed = params.get("categoriesAlreadyUsed").split(" ");
+}
 
-//If the game hasn't started yet a.k.a "round = 0" parameter was passed over by the home page url
+//If the game hasn't started yet a.k.a "round = 0" parameter was passed
+//over by the home page url
 //then an intro pop up happens to introduce the game and get the players' names
 if (roundNumber === 0) {
   intro();
@@ -114,7 +117,8 @@ if (roundNumber === 0) {
 
 //Pop up introduction to the game
 function intro() {
-  //series of DOM reasignement for the popup box to look as needed
+  //series of DOM reasignement for the
+  //popup box to look as needed
   popUpBox.style.display = "block";
   passButton.style.display = "none";
   answerInput.style.display = "none";
@@ -128,7 +132,8 @@ function intro() {
   popUpContent.textContent =
     "Thanks for playing - This is a two player game: answer questions, accumulate points, score more than your opponent to win!";
 
-  //When the player clicks the "OK" button, the function to gather the player's name starts
+  //When the player clicks the "OK" button,
+  //the function to gather the player's name starts
   submitButton.textContent = "Ok"; //
   submitButton.disabled = false;
   answerForm.addEventListener("click", playerNamesInput);
@@ -138,9 +143,11 @@ function intro() {
     event.preventDefault();
     answerForm.removeEventListener("click", playerNamesInput);
     /*This is just for safety, I found that if I don't remove the event listeners 
-when they're not needed anymore, sometimes they can be triggered at an unwanted moment later on...*/
+when they're not needed anymore, sometimes they can be triggered 
+at an unwanted moment later on...*/
 
-    //The form resets and the input box appears and asks for the players' names, one at a time
+    //The form resets and the input box appears and asks
+    //for the players' names, one at a time
     answerForm.reset();
     popUpContent.textContent = "First, let's get your names...";
     answerInput.style.display = "block";
@@ -176,7 +183,8 @@ if a value is being entered, avoiding empty strings to be submitted - I have it 
     } else if (playerTwo.name === "Player Two") {
       playerTwo.name = answerInput.value;
 
-      //Once both player names have been registered, then the pages refreshes with the new information
+      //Once both player names have been registered, then the
+      //pages refreshes with the new information
       //This time, round = 1, so the intro will be skipped and the game will start
       document.location = `round-1.html?roundNumber=1\ 
 &playerOneTurn=true\
@@ -189,22 +197,39 @@ if a value is being entered, avoiding empty strings to be submitted - I have it 
   }
 }
 
+//this sections decides whic
 let listOfCategoriesAvailable = [
-  "Art & Literature",
-  "Language",
-  "Science & Nature",
-  "General",
-  "Food & Drink",
-  "People & Places",
-  "Geography",
-  "History & Holidays",
-  "Entertainment",
-  "Toys & Games",
+  "General Knowledge",
+  "Books",
+  "Film",
   "Music",
+  "Musicals & Theatres",
+  "Television",
+  "Video Games",
+  "Board Games",
+  "Science & Nature",
+  "Computers",
   "Mathematics",
-  "Religion & Mythology",
-  "Sports & Leisure",
+  "Mythology",
+  "Sports",
+  "Geography",
+  "History",
+  "Politics",
+  "Art",
+  "Celebreties",
+  "Animals",
+  "Vehicles",
+  "Comics",
+  "Gadgets",
+  "Japanese Anime & Manga",
+  "Cartoon & Animations",
 ];
+
+let shuffledListOfCategories = [];
+
+categoriesAlreadyUsed.forEach((category) => {
+  listOfCategoriesAvailable.splice(parseInt(category), 1);
+});
 
 function shuffleCategories() {
   for (var i = listOfCategoriesAvailable.length - 1; i > 0; i--) {
@@ -213,23 +238,66 @@ function shuffleCategories() {
     listOfCategoriesAvailable[i] = listOfCategoriesAvailable[j];
     listOfCategoriesAvailable[j] = temp;
   }
-
-  for (let i = 0; i < 13; i++) {
-    if (i <= 5) {
-      firstRoundCategories.push(listOfCategoriesAvailable[i]);
-    } else if (i <= 11) {
-
-      secondRoundCategories.push(listOfCategoriesAvailable[i]);
-    } else if (i === 12) {
-      finalRoundCategory = listOfCategoriesAvailable[i];
-    }
-  }
+  shuffledListOfCategories = listOfCategoriesAvailable;
 }
-
 shuffleCategories();
 
+listOfCategoriesAvailable = [
+  "General Knowledge",
+  "Books",
+  "Film",
+  "Music",
+  "Musicals & Theatres",
+  "Television",
+  "Video Games",
+  "Board Games",
+  "Science & Nature",
+  "Computers",
+  "Mathematics",
+  "Mythology",
+  "Sports",
+  "Geography",
+  "History",
+  "Politics",
+  "Art",
+  "Celebreties",
+  "Animals",
+  "Vehicles",
+  "Comics",
+  "Gadgets",
+  "Japanese Anime & Manga",
+  "Cartoon & Animations",
+];
 
+let categoryNumbersList = [];
+let finalCategoryNumber;
 
+if (roundNumber === 1) {
+  categoryNumbersList = [];
+  for (let i = 0; i < 6; i++) {
+    firstRoundCategories.push(shuffledListOfCategories[i]);
+  }
+  firstRoundCategories.forEach((category) => {
+    categoriesAlreadyUsed.push(listOfCategoriesAvailable.indexOf(category));
+    categoryNumbersList.push(
+      (listOfCategoriesAvailable.indexOf(category) + 9).toString()
+    );
+  });
+} else if (roundNumber === 2) {
+  categoryNumbersList = [];
+  for (let i = 0; i < 6; i++) {
+    secondRoundCategories.push(shuffledListOfCategories[i]);
+  }
+  secondRoundCategories.forEach((category) => {
+    categoriesAlreadyUsed.push(listOfCategoriesAvailable.indexOf(category));
+    categoryNumbersList.push(
+      (listOfCategoriesAvailable.indexOf(category) + 9).toString()
+    );
+  });
+} else if (roundNumber === 3) {
+  finalRoundCategory = shuffledListOfCategories[0];
+  finalCategoryNumber = (listOfCategoriesAvailable.indexOf(finalRoundCategory) + 9).toString();
+}
 
 //This coming function fetches data from "Ninja API"
 //for each category and each round a pull is made
@@ -240,94 +308,126 @@ let firstRoundQuestionsDataList = [];
 let secondRoundQuestionsDataList = [];
 
 async function getData() {
-  for (let i = 0; i < 6; i++) {
-    questionsData = await fetch(
-      `https://api.api-ninjas.com/v1/trivia?limit=6&category=${firstRoundCategories[i].replace(/\s/g, "").replace(/&/g, "")}`,
-      {
-        headers: {
-          "X-Api-Key": "g8LJ+K3KglfVpikhIrcj6g==jxQuuDW1BtSDW25L",
-        },
-      }
-    );
-    questionsData = await questionsData.json();
-    firstRoundQuestionsDataList.push(questionsData);
-  }
-
-  for (let i = 0; i < 6; i++) {
-    questionsData = await fetch(
-      `https://api.api-ninjas.com/v1/trivia?limit=6&category=${secondRoundCategories[i].replace(/\s/g, "").replace(/&/g, "")}`,
-      {
-        headers: {
-          "X-Api-Key": "g8LJ+K3KglfVpikhIrcj6g==jxQuuDW1BtSDW25L",
-        },
-      }
-    );
-    questionsData = await questionsData.json();
-    secondRoundQuestionsDataList.push(questionsData);
-  }
-
-  questionsData = await fetch(`https://api.api-ninjas.com/v1/trivia?limit=1&category=${finalRoundCategory.replace(/\s/g, "").replace(/&/g, "")}`,
-    {
-      headers: {
-        "X-Api-Key": "g8LJ+K3KglfVpikhIrcj6g==jxQuuDW1BtSDW25L",
-      },
+  if (roundNumber === 1) {
+    popUpBox.style.display = "block";
+    passButton.style.display = "none";
+    submitButton.style.display = "none";
+    answerInput.style.display = "none";
+    //text content that introduces the game
+    popUpHeader.textContent = "Please Wait!";
+    popUpContent.textContent = "Loading questions...";
+    for (let i = 0; i < 6; i++) {
+      questionsData = await fetch(
+        `https://opentdb.com/api.php?amount=5&category=${categoryNumbersList[i]}&difficulty=easy&type=multiple&encode=base64`
+      );
+      questionsData = await questionsData.json();
+      firstRoundQuestionsDataList.push(questionsData.results);
     }
-  );
-  lastRoundQuestion = await questionsData.json();
+    popUpBox.style.display = "none";
+    passButton.style.display = "block";
+    submitButton.style.display = "block";
+    answerInput.style.display = "block";
+  }
 
-//reorganizes the fetched data into a list 
-//where the questions are in order of apearance of the grid
+  if (roundNumber === 2) {
+    popUpBox.style.display = "block";
+    passButton.style.display = "none";
+    submitButton.style.display = "none";
+    answerInput.style.display = "none";
+    //text content that introduces the game
+    popUpHeader.textContent = "Please Wait!";
+    popUpContent.textContent = "Loading questions...";
+
+    for (let i = 0; i < 6; i++) {
+      questionsData = await fetch(
+        `https://opentdb.com/api.php?amount=5&category=${categoryNumbersList[i]}&difficulty=easy&type=multiple&encode=base64`
+      );
+      questionsData = await questionsData.json();
+      secondRoundQuestionsDataList.push(questionsData.results);
+    }
+    popUpBox.style.display = "none";
+    passButton.style.display = "block";
+    submitButton.style.display = "block";
+    answerInput.style.display = "block";
+  }
+
+  if (roundNumber === 3) {
+    popUpBox.style.display = "block";
+    submitButton.style.display = "none";
+    answerInput.style.display = "none";
+    //text content that introduces the game
+    popUpHeader.textContent = "Please Wait!";
+    popUpContent.textContent = "Loading questions...";
+    questionsData = await fetch(
+      `https://opentdb.com/api.php?amount=5&category=${finalCategoryNumber}&difficulty=easy&type=multiple&encode=base64`
+    );
+    lastRoundQuestion = await questionsData.json();
+    lastRoundQuestion = lastRoundQuestion.results
+    popUpBox.style.display = "none";
+    submitButton.style.display = "block";
+  }
+
+  //reorganizes the fetched data into a list
+  //where the questions are in order of apearance of the grid
   let questionsList = [];
   let j = 0;
   let k = 0;
 
-  i = 0;
-  for (let i = 0; i < 30; i++) {
-    questionsList.push(firstRoundQuestionsDataList[j][k]);
-    j++;
-    if (j === 6) {
-      j = 0;
-      k++;
+  if (roundNumber === 1) {
+    i = 0;
+    k = 0;
+    questionsList = [];
+    for (let i = 0; i < 30; i++) {
+      questionsList.push(firstRoundQuestionsDataList[j][k]);
+      j++;
+      if (j === 6) {
+        j = 0;
+        k++;
+      }
     }
   }
 
-  j = 0;
-  k = 0;
-  for (let i = 0; i < 30; i++) {
-    questionsList.push(secondRoundQuestionsDataList[j][k]);
-    j++;
-    if (j === 6) {
-      j = 0;
-      k++;
+  if (roundNumber === 2) {
+    i = 0;
+    k = 0;
+    questionsList = [];
+    for (let i = 0; i < 30; i++) {
+      questionsList.push(secondRoundQuestionsDataList[j][k]);
+      j++;
+      if (j === 6) {
+        j = 0;
+        k++;
+      }
     }
   }
 
-  questionsList.push(lastRoundQuestion[0]);
+  if (roundNumber === 3) {
+    i = 0;
+    k = 0;
+    questionsList = [];
+    questionsList.push(lastRoundQuestion[0]);
+  }
 
-console.log(questionsList)
-//sorts through the question list and distributes them 
-//into separate lists for each round
+  //sorts through the question list and distributes them
+  //into separate lists for each round
   for (let i = 0; i < questionsList.length; i++) {
-    if (i === 60) {
-      //the 61st question  of the list (index 60) is for the final round
-      lastRoundQuestion = questionsList[i].question;
-      lastRoundAnswer = questionsList[i].answer;
-      lastRoundCategory = questionsList[i].category;
-    } else if (i > 29) {
-      // the next 30 (30 to 59) are for the second round
-      secondRoundQuestionsList.push(questionsList[i].question);
-      secondRoundAnswersArray.push(questionsList[i].answer);
-    } else if (i <= 29) {
-      // the first 30 (0 to 29)  are for the first round
-      firstRoundQuestionsList.push(questionsList[i].question);
-      firstRoundAnswersArray.push(questionsList[i].answer);
+    if (roundNumber === 3) {
+      lastRoundQuestion = atob(questionsList[i].question);
+      lastRoundAnswer = atob(questionsList[i].correct_answer);
+    } else if (roundNumber === 2) {
+      secondRoundQuestionsList.push(atob(questionsList[i].question));
+      secondRoundAnswersArray.push(atob(questionsList[i].correct_answer));
+    } else if (roundNumber === 1) {
+      firstRoundQuestionsList.push(atob(questionsList[i].question));
+      firstRoundAnswersArray.push(atob(questionsList[i].correct_answer));
     }
   }
 }
 
 //the whole function to fetch and sort the questions is called
-getData();
-
+if (roundNumber !== 0) {
+  getData();
+}
 
 //this takes the list of category boxes html elements in the DOM
 //and converts it into an array
@@ -591,7 +691,7 @@ function goBack() {
   //we advance to the next round
   if (roundNumber === 1) {
     if (
-      numberOfQuestionsGoneThrough === 1 ||
+      numberOfQuestionsGoneThrough === 30 ||
       playerOne.score >= 2500 ||
       playerTwo.score >= 2500
     ) {
@@ -600,7 +700,7 @@ function goBack() {
     }
   } else if (roundNumber === 2) {
     if (
-      numberOfQuestionsGoneThrough === 1 ||
+      numberOfQuestionsGoneThrough === 30 ||
       playerOne.score >= 5000 ||
       playerTwo.score >= 5000
     ) {
@@ -651,7 +751,6 @@ selected. Time to advance to the next round!";
     answerInput.style.display = "block";
     passButton.style.display = "block";
     submitButton.textContent = "Guess";
-
     if (roundNumber === 2) {
       document.location = `/round-2.html?roundNumber=2\
 &playerOneTurn=${playerOne.turnToPick}\
@@ -659,7 +758,8 @@ selected. Time to advance to the next round!";
 &playerOneScore=${playerOne.score}\
 &playerTwoScore=${playerTwo.score}\
 &playerOneName=${playerOne.name}\
-&playerTwoName=${playerTwo.name}`;
+&playerTwoName=${playerTwo.name}\
+&categoriesAlreadyUsed=${categoriesAlreadyUsed.join("+")}`;
     } else if (roundNumber === 3) {
       document.location = `/final-jeopardy.html?roundNumber=3\
 &playerOneTurn=true\
@@ -667,7 +767,8 @@ selected. Time to advance to the next round!";
 &playerOneScore=${playerOne.score}\
 &playerTwoScore=${playerTwo.score}\
 &playerOneName=${playerOne.name}\
-&playerTwoName=${playerTwo.name}`;
+&playerTwoName=${playerTwo.name}\
+&categoriesAlreadyUsed=${categoriesAlreadyUsed.join("+")}`;
     }
   }
 }
@@ -676,15 +777,17 @@ selected. Time to advance to the next round!";
 //this function is for the functionality of the final round
 //which is a litte different
 function finalJeopardy() {
+  answerInput.style.display = "none";
   let playerOneAnswer; // we will store the answers of both players in these variables.
   let playerTwoAnswer;
 
   //first the players are asked how much they want to bet
   answerForm.reset();
-  finalCategoryTextBox.textContent = `Category: ${lastRoundCategory}`;
+  answerInput.style.display = "none";
+  finalCategoryTextBox.textContent = `Category: ${finalRoundCategory}`;
   finalQuestionTextBox.textContent =
     "Enter the amount of points you would like to bet for the final question...";
-  answerInput.style.display = "none";
+  
   notification.textContent = "";
   if (playerOne.turnToPick === true) {
     whichPlayerTurn.textContent = `${playerOne.name}, your turn to bet...`;

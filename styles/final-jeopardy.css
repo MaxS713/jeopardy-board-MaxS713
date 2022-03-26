@@ -155,6 +155,12 @@ input{
     align-items: center;
 }
 
+#buttons{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /*styling for the buttons*/
 button{
     color:#d7dadd;

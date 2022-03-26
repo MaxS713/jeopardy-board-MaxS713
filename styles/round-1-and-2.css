@@ -64,6 +64,9 @@ header{
     color:#c7d9ec;
     border-radius: 0.5px;
     padding: 1.5vw 1vw;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /*Styling for each grid items*/
