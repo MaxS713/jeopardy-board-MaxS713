@@ -124,7 +124,7 @@ span{
 }
 
 
-/*So the grid was very squished on portrait mode on a phone so, this system makes everything disapear
+/*So the grid was very squished on portrait mode on a phone so, this system makes everything disappear
 and asks the user to rotate his phone - I found that a width<500px should capture most scenarios*/
 
 #rotate-phone { /*If the screen is wide enough, the prompt to rotate the phone doesn't appear*/
@@ -134,7 +134,7 @@ and asks the user to rotate his phone - I found that a width<500px should captur
 @media screen and (max-width: 500px) {
     main, header{
         display:none; /*If the screen isn't wide enough, 
-        everything disapear exept for the prompt to rotate the phone*/
+        everything disappear except for the prompt to rotate the phone*/
     }
     #rotate-phone { 
         display: block;
@@ -143,7 +143,7 @@ and asks the user to rotate his phone - I found that a width<500px should captur
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%); /*Found online that this was a way
-        to center something vertically and horizontaly - looks over-complicated for something so simple
+        to center something vertically and horizontally - looks over-complicated for something so simple
         but it works*/
         text-align: center; 
     }
@@ -161,7 +161,7 @@ Also, I got plenty of help from google too for this*******/
     bottom: 0; /*The overlay covers the whole screen with TBLR properties of 0 and a position: fixed*/
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.6); /*A black color with an opacitity setting creates a "dim" effect */
+    background: rgba(0, 0, 0, 0.6); /*A black color with an opacity setting creates a "dim" effect */
     transition: opacity 500ms; 
     display: none; /*Display is set to none. But is changed to appear by javascript when needed*/
 }

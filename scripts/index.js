@@ -4,7 +4,7 @@ But these are things that still need some work and that I didn't have time to do
 - The way some answers are checked can be quite unfair - ex: Sea horse instead of Seahorse, 
 sputnik instead of Sputnik 1, washington, instead of George Washington - etc...
 Need to write a better function that would be more forgiving in those cases. 
-Also maybe in some cases if the ortograph is not quite correct, the answer could still pass.
+Also maybe in some cases if the orthograph is not quite correct, the answer could still pass.
 
 - There's a problem with the score requirement needed to go from round 2 to round 3 - 
 it said it needed to be 5000, but I wasn't sure if it was for the round only or total. That being said,
@@ -13,7 +13,7 @@ came in with 2500 points could get there easily. Perhaps I should put in a varia
 of the score for the round only, not total.
 
 -In general the CSS and html can still be improved for a better user experience,
-and responsiveness is not quite optimized yet. Plenty of code refractoring could be done as well.
+and responsiveness is not quite optimized yet. Plenty of code refactoring could be done as well.
 */
 
 //Defining all the DOM elements I will need to manipulate throughout the script
@@ -117,7 +117,7 @@ if (roundNumber === 0) {
 
 //Pop up introduction to the game
 function intro() {
-  //series of DOM reasignement for the
+  //series of DOM reassignment for the
   //popup box to look as needed
   popUpBox.style.display = "block";
   passButton.style.display = "none";
@@ -197,7 +197,7 @@ if a value is being entered, avoiding empty strings to be submitted - I have it 
   }
 }
 
-//this sections decides whic
+//this sections decides which categories to use during the playthrough
 let listOfCategoriesAvailable = [
   "General Knowledge",
   "Books",
@@ -216,7 +216,7 @@ let listOfCategoriesAvailable = [
   "History",
   "Politics",
   "Art",
-  "Celebreties",
+  "Celebrities",
   "Animals",
   "Vehicles",
   "Comics",
@@ -227,10 +227,13 @@ let listOfCategoriesAvailable = [
 
 let shuffledListOfCategories = [];
 
+//this takes away the category already used from the main list
+//to avoid repeats, mainly useful for round 2 and 3
 categoriesAlreadyUsed.forEach((category) => {
   listOfCategoriesAvailable.splice(parseInt(category), 1);
 });
 
+//this shuffles the categories, so they aren't always in the same order
 function shuffleCategories() {
   for (var i = listOfCategoriesAvailable.length - 1; i > 0; i--) {
     var j = Math.floor(Math.random() * (i + 1));
@@ -242,6 +245,10 @@ function shuffleCategories() {
 }
 shuffleCategories();
 
+//I had to separate and redefine the list Of Categories
+//and the shuffled list of usable categories, because the latter is for the game
+//and the other is to be able to find the index of each category for 
+//fetching by number in the API URL 
 listOfCategoriesAvailable = [
   "General Knowledge",
   "Books",
@@ -260,7 +267,7 @@ listOfCategoriesAvailable = [
   "History",
   "Politics",
   "Art",
-  "Celebreties",
+  "Celebrities",
   "Animals",
   "Vehicles",
   "Comics",
@@ -269,6 +276,8 @@ listOfCategoriesAvailable = [
   "Cartoon & Animations",
 ];
 
+//this sorts the categories in their respective list needed for the game
+//and also finds the index of each category for proper fetching in the API
 let categoryNumbersList = [];
 let finalCategoryNumber;
 
@@ -296,10 +305,12 @@ if (roundNumber === 1) {
   });
 } else if (roundNumber === 3) {
   finalRoundCategory = shuffledListOfCategories[0];
-  finalCategoryNumber = (listOfCategoriesAvailable.indexOf(finalRoundCategory) + 9).toString();
+  finalCategoryNumber = (
+    listOfCategoriesAvailable.indexOf(finalRoundCategory) + 9
+  ).toString();
 }
 
-//This coming function fetches data from "Ninja API"
+//This coming function fetches data from "OpenDB Trivia"
 //for each category and each round a pull is made
 //the information is pushed and stored in those three variables
 
@@ -309,14 +320,20 @@ let secondRoundQuestionsDataList = [];
 
 async function getData() {
   if (roundNumber === 1) {
+    //just in case the loading of questions takes longer than needed
+    //A pop up box loading box appears - usually not noticeable
     popUpBox.style.display = "block";
     passButton.style.display = "none";
     submitButton.style.display = "none";
     answerInput.style.display = "none";
-    //text content that introduces the game
     popUpHeader.textContent = "Please Wait!";
     popUpContent.textContent = "Loading questions...";
     for (let i = 0; i < 6; i++) {
+      //thanks to the category number defined earlier, 
+      //we can pull a set of 5 random questions for each category
+      //difficulty is easy, which are already pretty hard questions 
+      //but could potentially work on having a difficulty selection menu
+      //Or have the difficulty increase as the game progresses
       questionsData = await fetch(
         `https://opentdb.com/api.php?amount=5&category=${categoryNumbersList[i]}&difficulty=easy&type=multiple&encode=base64`
       );
@@ -334,7 +351,6 @@ async function getData() {
     passButton.style.display = "none";
     submitButton.style.display = "none";
     answerInput.style.display = "none";
-    //text content that introduces the game
     popUpHeader.textContent = "Please Wait!";
     popUpContent.textContent = "Loading questions...";
 
@@ -355,20 +371,19 @@ async function getData() {
     popUpBox.style.display = "block";
     submitButton.style.display = "none";
     answerInput.style.display = "none";
-    //text content that introduces the game
     popUpHeader.textContent = "Please Wait!";
     popUpContent.textContent = "Loading questions...";
     questionsData = await fetch(
       `https://opentdb.com/api.php?amount=5&category=${finalCategoryNumber}&difficulty=easy&type=multiple&encode=base64`
     );
     lastRoundQuestion = await questionsData.json();
-    lastRoundQuestion = lastRoundQuestion.results
+    lastRoundQuestion = lastRoundQuestion.results;
     popUpBox.style.display = "none";
     submitButton.style.display = "block";
   }
 
-  //reorganizes the fetched data into a list
-  //where the questions are in order of apearance of the grid
+  //this reorganizes the fetched data into a list
+  //where the questions are in order of appearance of the grid
   let questionsList = [];
   let j = 0;
   let k = 0;
@@ -465,7 +480,7 @@ function assignDailyDouble() {
     dailyDoubleBoxID2 = Math.floor(Math.random() * 30);
   }
 }
-//fucntion to create the daily double numbers is called
+//function to create the daily double numbers is called
 assignDailyDouble();
 
 //checks who's turn it is and notify at the top of the page
@@ -502,7 +517,7 @@ function askQuestion() {
   if (questionID === dailyDoubleBoxID1 || questionID === dailyDoubleBoxID2) {
     dailyDoubleAlert(); //if we are, the user is alerted
   } else {
-    displayQuestion(); //if not, basic display of the question is trigerred
+    displayQuestion(); //if not, basic display of the question is triggered
   }
 }
 
@@ -527,7 +542,7 @@ function displayQuestion() {
 
   playerOne.hasGuessed = false;
   playerTwo.hasGuessed = false;
-  //reseting these values that check if a player has already guessed during callbacks
+  //resetting these values that check if a player has already guessed during callbacks
 
   //depending on whose turn it is, displays the name in the header
   if (playerOne.turnToPick === true) {
@@ -708,7 +723,7 @@ function goBack() {
     }
   }
 
-  //this make the popup box disapear
+  //this make the popup box disappear
   answerForm.removeEventListener("submit", checkAnswer);
   passButton.removeEventListener("click", pass);
   popUpBox.style.display = "none";
@@ -743,7 +758,7 @@ selected. Time to advance to the next round!";
   submitButton.addEventListener("click", gotoNextRound);
 
   //after the notification is dismissed
-  //the popup disapears and an url to the next round is generated
+  //the popup disappears and an url to the next round is generated
   //with some parameters to pass through - players name, score, etc...
   function gotoNextRound() {
     submitButton.removeEventListener("click", gotoNextRound);
@@ -775,7 +790,7 @@ selected. Time to advance to the next round!";
 
 //this was it for the first and second round,
 //this function is for the functionality of the final round
-//which is a litte different
+//which is a little different
 function finalJeopardy() {
   answerInput.style.display = "none";
   let playerOneAnswer; // we will store the answers of both players in these variables.
@@ -787,7 +802,7 @@ function finalJeopardy() {
   finalCategoryTextBox.textContent = `Category: ${finalRoundCategory}`;
   finalQuestionTextBox.textContent =
     "Enter the amount of points you would like to bet for the final question...";
-  
+
   notification.textContent = "";
   if (playerOne.turnToPick === true) {
     whichPlayerTurn.textContent = `${playerOne.name}, your turn to bet...`;

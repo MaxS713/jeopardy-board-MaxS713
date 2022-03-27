@@ -51,13 +51,13 @@ be a little pushed to the right */
     font-size: min(max(3vw), 30px);
 }
 
-/*And the first letter, bigger - achieved with with this pseudoelement */
+/*And the first letter, bigger - achieved with with this pseudo-element */
 .title-first-line::first-letter {
     font-size: min(max(5vw), 50px);
 }
 
 /*I needed the numbers to be slightly smaller and slightly pushed to the right*/
-/*Also I needed all the diferent section
+/*Also I needed all the different section
 of the title to not go to a new line, but be inline...*/
 .num{
     font-size: min(max(4vw), 40px);
@@ -95,7 +95,7 @@ I tried to tinker with it a bit though */
     }
 }
 
-/*We want the image to be an aceptable size*/
+/*We want the image to be an acceptable size*/
 img {
     margin-top: 4vh;
     max-width:60vw;
