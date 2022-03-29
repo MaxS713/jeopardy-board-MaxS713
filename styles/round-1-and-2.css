@@ -263,7 +263,7 @@ footer{
 
 /*It's unfortunate - but if the screen height gets unreasonably tight
 we have to sacrifice the footer*/
-@media screen and (max-height: 450px) {
+@media screen and (max-height: 500px) {
     footer{
         display:none;
     }
