@@ -260,3 +260,11 @@ footer{
     width:40%;
     background-color: #1B5176;
 }
+
+/*It's unfortunate - but if the screen height gets unreasonably tight
+we have to sacrifice the footer*/
+@media screen and (max-height: 450px) {
+    footer{
+        display:none;
+    }
+}
